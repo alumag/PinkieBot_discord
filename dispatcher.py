@@ -19,7 +19,7 @@ async def on_ready():
 async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
-        args = message.content.strip('$' + command + ' ')
+        args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
             await commands[command](client, message, args)
         else:
