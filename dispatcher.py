@@ -1,6 +1,8 @@
 import discord
 import asyncio
 
+import ddg_cmd
+
 client = discord.Client()
 
 token = open('token.txt').read().strip('\n')
@@ -8,7 +10,8 @@ token = open('token.txt').read().strip('\n')
 async def test_command(client, message, args):
     await client.send_message(message.channel, 'testing, args: ' + args)
 
-commands = {'test': test_command}
+commands = {'test': test_command,
+			'ddg': ddg_cmd.query_ddg}
 
 
 @client.event
