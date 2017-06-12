@@ -17,6 +17,9 @@ async def query_ddg(client, message, args):
 			txt = f'{results[0]["FirstURL"]}'
 		elif abstract and not results:
 			txt = f'{abstract}'
+		elif not abstract and not results:
+			related = decoded_data['RelatedTopics'][0]
+			txt = f'{related["FirstURL"]}\n {related["Text"]}'
 		else:
 			txt = f'{results[0]["FirstURL"]}\n {abstract}'
 
