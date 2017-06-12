@@ -29,6 +29,8 @@ async def on_message(message):
         args = message.content.strip('$' + command + ' ')
         if command in commands.keys():
             await commands[command](client, message, args)
+        else:
+            await client.send_message(message.channel, '"${}" is not supported!'.format(command))
 
         # if message.content.startswith('!test'):
         #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)

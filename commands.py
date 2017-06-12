@@ -1,0 +1,11 @@
+async def help_cmd(client, message, args):
+    msg = "Available commands:\n[" + ", ".join(commands.keys()) + "]"
+    await client.send_message(message.channel, msg)
+
+async def test_command(client, message, args):
+    await client.send_message(message.channel, 'testing, args: ' + args)
+
+commands = {
+    'test': test_command,
+    'help': help_cmd,
+}
