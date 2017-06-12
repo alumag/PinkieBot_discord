@@ -1,4 +1,5 @@
 from calc_cmd import calc_cmd
+from rand_cmd import rand_cmd
 
 
 async def help_cmd(client, message, args):
@@ -12,4 +13,5 @@ commands = {
     'test': test_command,
     'help': help_cmd,
     'calc': calc_cmd,
+    'rand': rand_cmd,
 }
