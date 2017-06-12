@@ -8,4 +8,7 @@ def rand_cmd(client, message, args):
     num2 = args.split(' ')[1]
     if not (num1.isdigit() and num2.isdigit()):
         return 'Illegal'
-    return 'Result: ' + str(randint(float(num1), float(num2)))
+    try:
+        return 'Result: ' + str(randint(float(num1), float(num2)))
+    except:
+        return 'LOL?'
