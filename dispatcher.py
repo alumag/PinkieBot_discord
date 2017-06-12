@@ -7,6 +7,7 @@ token = open('token.txt').read().strip('\n')
 
 commands = {}
 
+
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -14,15 +15,18 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+
 @client.event
 async def on_message(message):
-	if(message.content.startswith('$')):
-		commands[message.split(' ')[1:]](client, message)
+    if message.content.startswith('$'):
+        command = message.content.strip('$').split(' ')[0]
+        args = message.content.strip('$' + command + ' ')
+        commands[command](client, args)
 
-    # if message.content.startswith('!test'):
-    #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
-    # elif message.content.startswith('!sleep'):
-    #     await asyncio.sleep(5)
-    #     await client.send_message(message.channel, 'Done sleeping')
+        # if message.content.startswith('!test'):
+        #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
+        # elif message.content.startswith('!sleep'):
+        #     await asyncio.sleep(5)
+        #     await client.send_message(message.channel, 'Done sleeping')
 
 client.run(token)
