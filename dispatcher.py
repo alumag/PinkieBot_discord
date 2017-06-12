@@ -1,14 +1,10 @@
 import discord
 import asyncio
+from commands import commands
 
 client = discord.Client()
 
 token = open('token.txt').read().strip('\n')
-
-async def test_command(client, message, args):
-    await client.send_message(message.channel, 'testing, args: ' + args)
-
-commands = {'test': test_command}
 
 
 @client.event
@@ -23,8 +19,12 @@ async def on_ready():
 async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
-        args = message.content.strip('$' + command + ' ')
-        await commands[command](client, message, args)
+        args = message.content.replace('$' + command + ' ', '', 1)
+        if command in commands.keys():
+            await client.send_message(message.channel, message.author.mention)
+            await commands[command](client, message, args)
+        else:
+            await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
 
         # if message.content.startswith('!test'):
         #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
