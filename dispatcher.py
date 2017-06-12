@@ -24,7 +24,7 @@ async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
         args = message.content.strip('$' + command + ' ')
-        commands[command](client, message, args)
+        await commands[command](client, message, args)
 
         # if message.content.startswith('!test'):
         #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
