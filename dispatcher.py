@@ -20,8 +20,8 @@ async def on_message(message):
         command = message.content.strip('$').split(' ')[0]
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
-            await commands[command](client, message, args)
-            await client.send_message(message.channel, message.author.mention)
+            await client.send_message(message.channel, message.author.mention +
+                                      '\n' + commands[command](client, message, args))
         else:
             await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
 
