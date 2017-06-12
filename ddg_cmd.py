@@ -16,7 +16,7 @@ def query_ddg(client, message, args):
 		if not abstract and results:
 			embed = discord.Embed(title=args, description=f'{results[0]["FirstURL"]}', color=3447003)
 		elif abstract and not results:
-			txt = f'{abstract}'
+			embed = discord.Embed(title=args, description=f'{abstract}', color=3447003)
 		elif not abstract and not results:
 			related = decoded_data['RelatedTopics'][0]
 			embed = discord.Embed(title=f'{related["FirstURL"]}', description=f'{related["Text"]}', color=3447003)
