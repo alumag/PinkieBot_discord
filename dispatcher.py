@@ -1,14 +1,10 @@
 import discord
 import asyncio
+from commands import commands
 
 client = discord.Client()
 
 token = open('token.txt').read().strip('\n')
-
-async def test_command(client, message, args):
-    await client.send_message(message.channel, 'testing, args: ' + args)
-
-commands = {'test': test_command}
 
 
 @client.event
