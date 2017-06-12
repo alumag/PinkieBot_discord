@@ -1,7 +1,7 @@
 from random import randint
 
 
-async def rand_cmd(client, message, args):
+def rand_cmd(client, message, args):
     if len(args) < 2:
         return 'Illegal'
     num1 = args.split(' ')[0]

@@ -4,7 +4,7 @@ import asyncio
 import urllib.request
 import json
 
-async def query_ddg(client, message, args):
+def query_ddg(client, message, args):
 
 	try:
 		query_data = urllib.request.urlopen(f'http://api.duckduckgo.com/?q={args}&format=json&pretty=1&skip_disambig=1').read()
