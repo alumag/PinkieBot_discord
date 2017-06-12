@@ -1,4 +1,4 @@
-token = 'MzIzODQxNzk3Nzk5NDExNzEz.DCBBOg.9k5s3K8JiWK6p5XDHvMSm_8Yulc'
+token = open('token.txt').read()
 import discord
 import asyncio
 
