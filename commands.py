@@ -12,11 +12,17 @@ def help_cmd(client, message, args):
 def test_command(client, message, args):
     return 'testing, args: ' + args
 
+
+def bill_cmd(client, message, args):
+    return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m'\
+        .format(message.author.display_name)
+
 commands = {
     'test': test_command,
     'help': help_cmd,
     'calc': calc_cmd,
     'rand': rand_cmd,
     'ddg': query_ddg,
+    'bill': bill_cmd,
     'urban': query_urban_dictionary,
 }
