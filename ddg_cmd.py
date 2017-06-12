@@ -14,15 +14,15 @@ def query_ddg(client, message, args):
 		abstract = decoded_data['Abstract']
 
 		if not abstract and results:
-			txt = f'{results[0]["FirstURL"]}'
+			embed = discord.Embed(title=args, description=f'{results[0]["FirstURL"]}', color=3447003)
 		elif abstract and not results:
 			txt = f'{abstract}'
 		elif not abstract and not results:
 			related = decoded_data['RelatedTopics'][0]
-			txt = f'{related["FirstURL"]}\n {related["Text"]}'
+			embed = discord.Embed(title=f'{related["FirstURL"]}', description=f'{related["Text"]}', color=3447003)
 		else:
-			txt = f'{results[0]["FirstURL"]}\n {abstract}'
+			embed = discord.Embed(title=f'{results[0]["FirstURL"]}', description=f'{abstract}', color=3447003)
 
-		return txt
+		return embed
 	except:
-		return "Sorry, I couldn't find anything on that"
+		return discord.Embed(title='Sorry', description='Could not find matching query', color=0xff5b4c)
