@@ -1,4 +1,5 @@
 from calc_cmd import calc_cmd
+from ddg_cmd import query_ddg
 from rand_cmd import rand_cmd
 
 
@@ -14,4 +15,5 @@ commands = {
     'help': help_cmd,
     'calc': calc_cmd,
     'rand': rand_cmd,
+    'ddg': query_ddg,
 }

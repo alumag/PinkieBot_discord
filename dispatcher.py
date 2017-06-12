@@ -2,14 +2,9 @@ import discord
 import asyncio
 from commands import commands
 
-import ddg_cmd
-
 client = discord.Client()
-
 token = open('token.txt').read().strip('\n')
 
-async def test_command(client, message, args):
-    await client.send_message(message.channel, 'testing, args: ' + args)
 
 @client.event
 async def on_ready():
