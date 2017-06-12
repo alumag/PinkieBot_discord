@@ -32,10 +32,4 @@ async def on_message(message):
         else:
             await client.send_message(message.channel, '"${}" is not supported!'.format(command))
 
-        # if message.content.startswith('!test'):
-        #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
-        # elif message.content.startswith('!sleep'):
-        #     await asyncio.sleep(5)
-        #     await client.send_message(message.channel, 'Done sleeping')
-
 client.run(token)

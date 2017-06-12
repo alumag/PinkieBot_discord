@@ -5,15 +5,22 @@ import urllib.request
 import json
 
 async def query_ddg(client, message, args):
-	query_data = urllib.request.urlopen(f'http://api.duckduckgo.com/?q={args}&format=json&pretty=1').read()
 
-	decoded_data = json.loads(query_data)
-	
 	try:
-		first_url = decoded_data['RelatedTopics'][0]
+		print(args)
+		query_data = urllib.request.urlopen(f'http://api.duckduckgo.com/?q={args}&format=json&pretty=1&skip_disambig=1').read()
+		decoded_data = json.loads(query_data)
 
-		txt = f'{first_url["FirstURL"]}\n {first_url["Text"]}'
+		results = decoded_data['Results']
+		abstract = decoded_data['Abstract']
+
+		if not abstract and results:
+			txt = f'{results[0]["FirstURL"]}'
+		elif abstract and not results:
+			txt = f'{abstract}'
+		else:
+			txt = f'{results[0]["FirstURL"]}\n {abstract}'
 
 		await client.send_message(message.channel, txt)
-	except KeyError:
-		pass
+	except:
+		await client.send_message(message.channel, "Sorry, I couldn't find anything on that")
