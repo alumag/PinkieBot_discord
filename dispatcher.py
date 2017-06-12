@@ -17,8 +17,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
 	if(message.content.startswith('$')):
-		commands[message.strip('$')](client, message)
-		
+		commands[message.split(' ')[1:]](client, message)
+
     # if message.content.startswith('!test'):
     #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
     # elif message.content.startswith('!sleep'):
