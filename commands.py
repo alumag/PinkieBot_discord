@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from calc_cmd import calc_cmd
 from ddg_cmd import query_ddg
 from rand_cmd import rand_cmd
@@ -14,8 +16,13 @@ def test_command(client, message, args):
 
 
 def bill_cmd(client, message, args):
-    return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m'\
+    return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m' \
         .format(message.author.display_name)
+
+
+def uuid_cmd(client, message, args):
+    return str(uuid4())
+
 
 commands = {
     'test': test_command,
@@ -25,4 +32,5 @@ commands = {
     'ddg': query_ddg,
     'bill': bill_cmd,
     'urban': query_urban_dictionary,
+    'uuid': uuid_cmd,
 }
