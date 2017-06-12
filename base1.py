@@ -1,8 +1,9 @@
-token = 'MzIzODQxNzk3Nzk5NDExNzEz.DCBBOg.9k5s3K8JiWK6p5XDHvMSm_8Yulc'
 import discord
 import asyncio
 
 client = discord.Client()
+
+token = 'MzIzODQxNzk3Nzk5NDExNzEz.DCBBOg.9k5s3K8JiWK6p5XDHvMSm_8Yulc'
 
 @client.event
 async def on_ready():
