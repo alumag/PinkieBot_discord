@@ -1,5 +1,6 @@
 import discord
 import asyncio
+from commands import commands
 
 import ddg_cmd
 
@@ -12,7 +13,6 @@ async def test_command(client, message, args):
 
 commands = {'test': test_command,
 			'ddg': ddg_cmd.query_ddg}
-
 
 @client.event
 async def on_ready():
@@ -27,7 +27,8 @@ async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
         args = message.content.strip('$' + command + ' ')
-        await commands[command](client, message, args)
+        if command in commands.keys():
+            await commands[command](client, message, args)
 
         # if message.content.startswith('!test'):
         #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
