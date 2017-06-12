@@ -23,6 +23,6 @@ async def query_ddg(client, message, args):
 		else:
 			txt = f'{results[0]["FirstURL"]}\n {abstract}'
 
-		await client.send_message(message.channel, txt)
+		return txt
 	except:
-		await client.send_message(message.channel, "Sorry, I couldn't find anything on that")
+		return "Sorry, I couldn't find anything on that"
