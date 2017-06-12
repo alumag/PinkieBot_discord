@@ -2,10 +2,17 @@ import discord
 import asyncio
 from commands import commands
 
+import ddg_cmd
+
 client = discord.Client()
 
 token = open('token.txt').read().strip('\n')
 
+async def test_command(client, message, args):
+    await client.send_message(message.channel, 'testing, args: ' + args)
+
+commands = {'test': test_command,
+			'ddg': ddg_cmd.query_ddg}
 
 @client.event
 async def on_ready():
@@ -25,11 +32,5 @@ async def on_message(message):
             await commands[command](client, message, args)
         else:
             await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
-
-        # if message.content.startswith('!test'):
-        #     await client.send_message(message.channel, 'Here is you test message, @' + message.author.name)
-        # elif message.content.startswith('!sleep'):
-        #     await asyncio.sleep(5)
-        #     await client.send_message(message.channel, 'Done sleeping')
 
 client.run(token)
