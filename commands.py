@@ -27,10 +27,10 @@ def uuid_cmd(client, message, args):
 commands = {
     'test': test_command,
     'help': help_cmd,
-    'calc': calc_cmd,
+    # 'calc': calc_cmd,
     'rand': rand_cmd,
     'ddg': query_ddg,
     'bill': bill_cmd,
     'urban': query_urban_dictionary,
-    'uuid': uuid_cmd,
+    # 'uuid': uuid_cmd,
 }
