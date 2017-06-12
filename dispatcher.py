@@ -16,6 +16,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.channel.name != 'bot':
+    	return
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
         args = message.content.replace('$' + command + ' ', '', 1)
