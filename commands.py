@@ -3,7 +3,7 @@ from uuid import uuid4
 from calc_cmd import calc_cmd
 from char_cmds import ord_cmd, chr_cmd
 from ddg_cmd import query_ddg
-from number_bases import hex_to_dec_cmd, dec_to_hex_cmd
+from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
 
@@ -39,4 +39,5 @@ commands = {
     'dec2hex': dec_to_hex_cmd,
     'ord': ord_cmd,
     'chr': chr_cmd,
+    'convert': num_converter_cmd,
 }
