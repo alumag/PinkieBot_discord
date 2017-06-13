@@ -27,7 +27,7 @@ def uuid_cmd(client, message, args):
 
 
 commands = {
-    'test': test_command,
+    # 'test': test_command,
     'help': help_cmd,
     # 'calc': calc_cmd,
     'rand': rand_cmd,
