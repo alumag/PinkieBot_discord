@@ -1,7 +1,9 @@
 from uuid import uuid4
 
 from calc_cmd import calc_cmd
+from char_cmds import ord_cmd, chr_cmd
 from ddg_cmd import query_ddg
+from number_bases import hex_to_dec_cmd, dec_to_hex_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
 
@@ -33,4 +35,8 @@ commands = {
     'bill': bill_cmd,
     'urban': query_urban_dictionary,
     # 'uuid': uuid_cmd,
+    'hex2dec': hex_to_dec_cmd,
+    'dec2hex': dec_to_hex_cmd,
+    'ord': ord_cmd,
+    'chr': chr_cmd,
 }

@@ -1,5 +1,6 @@
 import discord
 import asyncio
+
 from commands import commands
 
 client = discord.Client()
@@ -17,17 +18,20 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.channel.name != 'bot':
-    	return
+        return
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
             ret = commands[command](client, message, args)
             if type(ret) is str:
-                await client.send_message(message.channel, message.author.mention + '\n' + commands[command](client, message, args))
+                await client.send_message(message.channel,
+                                          message.author.mention + '\n' + commands[command](client, message, args))
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
         else:
-            await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
+            await client.send_message(message.channel,
+                                      message.author.mention + '\n"${}" is not supported!'.format(command))
+
 
 client.run(token)
