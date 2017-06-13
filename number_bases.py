@@ -32,13 +32,19 @@ def num_converter_cmd(client, message, args):
             octal = oct(decimal)
             binary = bin(decimal)
             hexa = num
-        else:
+        elif num.isdigit():
             decimal = int(num)
             char = chr(decimal)
+            octal = oct(decimal)
+            binary = bin(decimal)
+            hexa = hex(decimal)
+        else:
+            decimal = ord(num)
+            char = num
             octal = oct(decimal)
             binary = bin(decimal)
             hexa = hex(decimal)
 
         return discord.Embed(title='Conversion', description=f'Decimal: {decimal}\nHexadecimal: {hexa}\nOctal: {octal}\nBinary: {binary}\nUnicode: {char}', color=3447003)
     except:
-        return discord.Embed(title='Sorry', description='Could not parse your query', color=0xff5b4c)
+        return discord.Embed(title='Sorry', description='Correct Usage: $convert <input>', color=0xff5b4c)
