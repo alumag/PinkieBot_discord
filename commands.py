@@ -18,7 +18,7 @@ def help_cmd(client, message, args):
 	
 
 def documentation_cmd(client, message, args):
-	return doc_str
+	return "```\n{}\n```".format(doc_str)
 
 
 def test_command(client, message, args):
