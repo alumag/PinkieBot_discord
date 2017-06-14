@@ -17,10 +17,13 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.channel.name != 'bot':
-        return
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
+
+        if command not in ['ddg', 'convert']:
+            if message.channel.name != 'bot':
+    	        return
+
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
             ret = commands[command](client, message, args)
