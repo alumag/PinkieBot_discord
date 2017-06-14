@@ -1,0 +1,26 @@
+rand START END
+	generate a random number between START & END
+	
+ddg PHARSE
+	search PHARSE on duckduckgo (a search engine)
+
+bill
+	generate a bill meme with your name
+	
+urban PHARSE
+	search PHARSE on urban (a dictionary)
+
+hex2dec NUM
+	convert an hex number to decimal
+
+dec2hex NUM
+	convert a decimal number to hexadecimal
+	
+ord CHAR
+	display the ascii value of a CHAR
+
+chr NUM
+	convert NUM to a char
+
+convert VAL
+	convert VAL

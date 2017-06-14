@@ -7,10 +7,18 @@ from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
 
+doc_file = open('help_file.txt')
+doc_str = doc_file.read()
+doc_file.close()
+
 
 def help_cmd(client, message, args):
     msg = "Available commands:\n[" + ", ".join(commands.keys()) + "]"
     return msg
+	
+
+def documentation_cmd(client, message, args):
+	return doc_str
 
 
 def test_command(client, message, args):
@@ -29,6 +37,7 @@ def uuid_cmd(client, message, args):
 commands = {
     # 'test': test_command,
     'help': help_cmd,
+	'doc': documentation_cmd
     # 'calc': calc_cmd,
     'rand': rand_cmd,
     'ddg': query_ddg,
