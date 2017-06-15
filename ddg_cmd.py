@@ -13,9 +13,6 @@ def query_ddg(client, message, args):
 		results = decoded_data['Results']
 		abstract = decoded_data['Abstract']
 
-		print(not results)
-		print(not abstract)
-
 		if not abstract and results:
 			embed = discord.Embed(title=args, description=f'{results[0]["FirstURL"]}', color=3447003)
 		elif abstract and not results:
@@ -23,6 +20,10 @@ def query_ddg(client, message, args):
 		else:
 			query_data = urllib.request.urlopen(f'http://api.duckduckgo.com/?q=\{args}&format=json&pretty=1&skip_disambig=1&no_redirect=1').read()
 			decoded_data = json.loads(query_data)
+
+			if decoded_data['Redirect'].startswith('https://api.duckduckgo.com'):
+				return discord.Embed(title='Sorry', description='Could not find matching query', color=0xff5b4c)
+
 			embed = discord.Embed(title=f'{decoded_data["Redirect"]}', color=3447003)
 
 		return embed
