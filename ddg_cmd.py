@@ -13,15 +13,17 @@ def query_ddg(client, message, args):
 		results = decoded_data['Results']
 		abstract = decoded_data['Abstract']
 
+		print(not results)
+		print(not abstract)
+
 		if not abstract and results:
 			embed = discord.Embed(title=args, description=f'{results[0]["FirstURL"]}', color=3447003)
 		elif abstract and not results:
 			embed = discord.Embed(title=args, description=f'{abstract}', color=3447003)
-		elif not abstract and not results:
-			related = decoded_data['RelatedTopics'][0]
-			embed = discord.Embed(title=f'{related["FirstURL"]}', description=f'{related["Text"]}', color=3447003)
 		else:
-			embed = discord.Embed(title=f'{results[0]["FirstURL"]}', description=f'{abstract}', color=3447003)
+			query_data = urllib.request.urlopen(f'http://api.duckduckgo.com/?q=\{args}&format=json&pretty=1&skip_disambig=1&no_redirect=1').read()
+			decoded_data = json.loads(query_data)
+			embed = discord.Embed(title=f'{decoded_data["Redirect"]}', color=3447003)
 
 		return embed
 	except:
