@@ -9,12 +9,21 @@ token = open('token.txt').read().strip('\n')
 main_server = 'SecHubIL'
 main_channel = 'general'
 
+
+@client.event
+async def on_member_join(member):
+    server = member.server
+    fmt = 'Welcome {0.mention}!'
+    await client.send_message(server, server.owner.top_role.mention + '\n ' + fmt.format(member))
+
+
 @client.event
 async def on_ready():
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
+
 
 @client.event
 async def on_message(message):
