@@ -34,6 +34,8 @@ def define_cmd(client, message, args):
         data = data.replace('"', "'")
         data = data.replace('''<div class='sr_e_index'>1.</div>''', '')
         res = data.split('''<div class='sr_e_para'><div class='sr_e_txt'>''')[1].split('</div>')[0]
+        if 'sr_example' in res:
+            res = res.split('<span')[0]
         bad_letters = '\\/;<>\n\r'
         if any(l in res for l in bad_letters):
             return "Not found"
