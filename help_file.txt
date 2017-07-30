@@ -24,3 +24,6 @@ chr NUM
 
 convert VAL
 	convert VAL
+
+def PHARSE
+    find a definition for PHARSE, works for Hebrew and English
