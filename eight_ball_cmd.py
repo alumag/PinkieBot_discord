@@ -14,7 +14,7 @@ ANSWERS = [
     "I'm too tired",
 ]
 
-def 8ball_cmd(client, message, args):
-    if message.endswith('?'):
+def eight_ball_cmd(client, message, args):
+    if args.endswith('?'):
         return random.choice(ANSWERS)
     return 'Please ask a question'
