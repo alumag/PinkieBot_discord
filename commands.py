@@ -7,6 +7,7 @@ from define import define_cmd
 from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
+from 8ball_cmd import 8ball_cmd
 
 doc_file = open('help_file.txt')
 doc_str = doc_file.read()
@@ -51,4 +52,5 @@ commands = {
     'chr': chr_cmd,
     'convert': num_converter_cmd,
     'def': define_cmd,
+    '8ball': 8ball_cmd,
 }
