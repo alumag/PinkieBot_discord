@@ -5,7 +5,7 @@ ANSWERS = [
     "Definitely",
     "Yes",
     "Probably",
-    "Mabye",
+    "Maybe",
     "Probably Not",
     "No",
     "Definitely Not",
