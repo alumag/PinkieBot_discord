@@ -1,5 +1,5 @@
 import random
-
+from functools import reduce
 
 ANSWERS = [
     "Definitely",
@@ -16,5 +16,6 @@ ANSWERS = [
 
 def eight_ball_cmd(client, message, args):
     if args.endswith('?'):
-        return random.choice(ANSWERS)
+        index = (int(message.author.id) + reduce(lambda x,y: x + y, map(ord, args))) % len(ANSWERS)
+        return ANSWERS[index]
     return 'Please ask a question'
