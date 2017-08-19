@@ -16,8 +16,10 @@ main_channel = 'general'
 
 unverified = {}
 
+user_kick_timeout = 700
+
 async def destroy(member):
-    await asyncio.sleep(10)
+    await asyncio.sleep(user_kick_timeout)
     try:
         if member in unverified.keys():
             await client.send_message(member.server, "{0.mention} IT'S HAMMER TIME".format(member))
