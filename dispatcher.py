@@ -1,7 +1,12 @@
 import discord
 import asyncio
+import time
+import threading
 
 from commands import commands
+
+import random
+import string
 
 client = discord.Client()
 token = open('token.txt').read().strip('\n')
@@ -9,12 +14,32 @@ token = open('token.txt').read().strip('\n')
 main_server = 'SecHubIL'
 main_channel = 'general'
 
+unverified = {}
+
+async def destroy(member):
+    await asyncio.sleep(10)
+    try:
+        if member in unverified.keys():
+            await client.send_message(member.server, "{0.mention} IT'S HAMMER TIME".format(member))
+            await client.kick(member)
+    except discord.Forbidden:
+        await client.send_message(member.server, 'Member is too stronk')
+    
+
+def generate_captcha():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
 @client.event
 async def on_member_join(member):
     server = member.server
-    fmt = 'Welcome {0.mention}!'
-    await client.send_message(server, server.owner.top_role.mention + '\n ' + fmt.format(member))
+    fmt = "Welcome {0.mention}!\n Please type the following message in order to verify that you're a human: {1}"
+
+    if member not in unverified.keys():
+        captcha = generate_captcha()
+        unverified[member] = captcha
+        
+        await client.send_message(server, server.owner.top_role.mention + '\n ' + fmt.format(member, captcha))
+        await destroy(member)
 
 
 @client.event
@@ -45,5 +70,12 @@ async def on_message(message):
         else:
             await client.send_message(message.channel,
                                       message.author.mention + '\n"${}" is not supported!'.format(command))
+    if message.author in unverified.keys():
+        if message.content == unverified[message.author]:
+            await client.send_message(message.channel,
+                                      message.author.mention + ' thanks!')
+            unverified.pop(message.author)
+    if message.content == 'DEBUG JOIN':
+        await on_member_join(message.author)
 
 client.run(token)
