@@ -24,6 +24,8 @@ async def destroy(member):
             await client.kick(member)
     except discord.Forbidden:
         await client.send_message(member.server, 'Member is too stronk')
+    finally:
+        unverified.pop(member)
     
 
 def generate_captcha():
@@ -37,7 +39,7 @@ async def on_member_join(member):
     if member not in unverified.keys():
         captcha = generate_captcha()
         unverified[member] = captcha
-        
+
         await client.send_message(server, server.owner.top_role.mention + '\n ' + fmt.format(member, captcha))
         await destroy(member)
 
@@ -75,7 +77,7 @@ async def on_message(message):
             await client.send_message(message.channel,
                                       message.author.mention + ' thanks!')
             unverified.pop(message.author)
-    if message.content == 'DEBUG JOIN':
-        await on_member_join(message.author)
+    # if message.content == 'DEBUG JOIN':
+    #     await on_member_join(message.author)
 
 client.run(token)
