@@ -8,6 +8,7 @@ from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
 from eight_ball_cmd import eight_ball_cmd
+from clear_messages import clear_messages
 
 doc_file = open('help_file.txt')
 doc_str = doc_file.read()
@@ -53,4 +54,8 @@ commands = {
     'convert': num_converter_cmd,
     'def': define_cmd,
     '8ball': eight_ball_cmd,
+}
+
+async_commands = {
+    'clear': clear_messages
 }

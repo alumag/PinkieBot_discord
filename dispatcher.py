@@ -3,7 +3,7 @@ import asyncio
 import time
 import threading
 
-from commands import commands
+from commands import commands, async_commands
 
 import random
 import string
@@ -59,7 +59,7 @@ async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
 
-        if command not in ['ddg', 'convert']:
+        if command not in ['ddg', 'convert', 'clear']:
             if message.channel.name != 'bot':
     	        return
 
@@ -68,9 +68,13 @@ async def on_message(message):
             ret = commands[command](client, message, args)
             if type(ret) is str:
                 await client.send_message(message.channel,
-                                          message.author.mention + '\n' + commands[command](client, message, args))
+                                          message.author.mention + '\n' + ret)
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
+
+        elif command in async_commands.keys():
+            await async_commands[command](client, message, args)
+
         else:
             await client.send_message(message.channel,
                                       message.author.mention + '\n"${}" is not supported!'.format(command))
