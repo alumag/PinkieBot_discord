@@ -102,3 +102,4 @@ ENV/
 .idea/
 
 token.txt
+karma.pkl

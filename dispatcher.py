@@ -4,7 +4,7 @@ import time
 import threading
 import re
 
-from commands import commands
+from commands import commands, async_commands
 
 import random
 import string
@@ -19,6 +19,7 @@ unverified = {}
 
 user_kick_timeout = 700
 
+
 async def destroy(member):
     await asyncio.sleep(user_kick_timeout)
     try:
@@ -29,10 +30,11 @@ async def destroy(member):
         await client.send_message(member.server, 'Member is too stronk')
     finally:
         unverified.pop(member)
-    
+
 
 def generate_captcha():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
 
 @client.event
 async def on_member_join(member):
@@ -60,6 +62,7 @@ async def on_message(message):
     if re.match("^ע[ד]+[ ]*מת[י]+$",message.content):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
         return
+		
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
 
@@ -73,8 +76,13 @@ async def on_message(message):
             ret = commands[command](client, message, args)
             if type(ret) is str:
                 await client.send_message(message.channel, message.author.mention + '\n' + commands[command](client, message, args))
+
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
+
+        elif command in async_commands.keys():
+            await async_commands[command](client, message, args)
+
         else:
             await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
     if message.author in unverified.keys():
@@ -82,6 +90,5 @@ async def on_message(message):
             await client.send_message(message.channel,
                                       message.author.mention + ' thanks!')
             unverified.pop(message.author)
-               
 
 client.run(token)
