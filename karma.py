@@ -27,6 +27,7 @@ def add_karma_cmd(client, message, args):
     _add_karma(user_id)
     return '%s has %s karma' % (user_nick, _get_karma(user_id))
 
+
 def take_karma_cmd(client, message, args):
     if message.author.server.owner.top_role in message.author.roles:
         if not _file_loaded:
@@ -78,11 +79,12 @@ def _add_karma(user_id):
     _set_karma_time(user_id)
     save_karma()
 
-def _take_karma(user_id):
+
+def _take_karma(user_id, num=1):
     if user_id not in user_data:
-        user_data[user_id] = -1
+        user_data[user_id] = -num
     else:
-        user_data[user_id] -= 1
+        user_data[user_id] -= num
     _set_karma_time(user_id)
     save_karma()
 
@@ -99,17 +101,20 @@ def _dec_karma(user_id):
 
 
 def _get_karma(user_id):
+    load_karma()
     if user_id not in user_data:
         return 0
     return user_data[user_id]
 
 
 def load_karma():
+    global _file_loaded
+    if _file_loaded:
+        return
     if os.path.isfile(_karma_file):
         with open(_karma_file, 'rb') as handle:
             global user_data
             user_data = pickle.load(handle)
-    global _file_loaded
     _file_loaded = True
 
 

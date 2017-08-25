@@ -5,6 +5,7 @@ from char_cmds import ord_cmd, chr_cmd
 from ddg_cmd import query_ddg
 from define import define_cmd
 from karma import add_karma_cmd, get_karma_cmd, take_karma_cmd
+from karma_store import buy_item
 from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
@@ -19,10 +20,10 @@ doc_file.close()
 def help_cmd(client, message, args):
     msg = "Available commands:\n[" + ", ".join(commands.keys()) + "]"
     return msg
-	
+
 
 def documentation_cmd(client, message, args):
-	return "```\n{}\n```".format(doc_str)
+    return "```\n{}\n```".format(doc_str)
 
 
 def test_command(client, message, args):
@@ -41,7 +42,7 @@ def uuid_cmd(client, message, args):
 commands = {
     # 'test': test_command,
     'help': help_cmd,
-	'doc': documentation_cmd,
+    'doc': documentation_cmd,
     # 'calc': calc_cmd,
     'rand': rand_cmd,
     'ddg': query_ddg,
@@ -58,6 +59,10 @@ commands = {
     'give': add_karma_cmd,
     'take': take_karma_cmd,
     'karma': get_karma_cmd,
+}
+
+karma_store_cmds = {
+    'buy': buy_item,
 }
 
 async_commands = {

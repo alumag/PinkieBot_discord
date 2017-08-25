@@ -4,8 +4,8 @@ import time
 import threading
 import re
 
-from commands import commands, async_commands
-from karma import _take_karma
+from commands import commands, async_commands, karma_store_cmds
+from karma import _take_karma, user_data
 import random
 import string
 
@@ -63,11 +63,11 @@ async def on_message(message):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
         _take_karma(message.author.id)
         return
-		
+
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
 
-        if command not in ['ddg', 'convert']:
+        if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
                  await client.send_message(message.author, '"${}" is not supported in none-bot channel!'.format(command))
                  return
@@ -81,8 +81,11 @@ async def on_message(message):
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
 
-        elif command in async_commands.keys():
+        elif command in async_commands:
             await async_commands[command](client, message, args)
+
+        elif command in karma_store_cmds and 'karma-store' == message.channel.name:
+            await karma_store_cmds[command](client, message, args)
 
         else:
             await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
