@@ -76,7 +76,7 @@ async def on_message(message):
         if command in commands.keys():
             ret = commands[command](client, message, args)
             if type(ret) is str:
-                await client.send_message(message.channel, message.author.mention + '\n' + commands[command](client, message, args))
+                await client.send_message(message.channel, message.author.mention + '\n' + ret)
 
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
