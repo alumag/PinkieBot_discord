@@ -4,7 +4,7 @@ from calc_cmd import calc_cmd
 from char_cmds import ord_cmd, chr_cmd
 from ddg_cmd import query_ddg
 from define import define_cmd
-from karma import add_karma_cmd, get_karma_cmd
+from karma import add_karma_cmd, get_karma_cmd, take_karma_cmd
 from number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
 from rand_cmd import rand_cmd
 from urban_cmd import query_urban_dictionary
@@ -56,6 +56,7 @@ commands = {
     'def': define_cmd,
     '8ball': eight_ball_cmd,
     'give': add_karma_cmd,
+    'take': take_karma_cmd,
     'karma': get_karma_cmd,
 }
 

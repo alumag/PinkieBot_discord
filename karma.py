@@ -27,6 +27,24 @@ def add_karma_cmd(client, message, args):
     _add_karma(user_id)
     return '%s has %s karma' % (user_nick, _get_karma(user_id))
 
+def take_karma_cmd(client, message, args):
+    if message.author.server.owner.top_role in message.author.roles:
+        if not _file_loaded:
+            load_karma()
+        try:
+            user_id = message.mentions[0].id
+            user_nick = message.mentions[0].nick
+            if user_nick is None:
+                user_nick = message.mentions[0].name
+        except:
+            return ' No user specified!'
+        if user_id == message.author.id:
+            return "4ril??"
+        if not _eligible_to_give(user_id):
+            return
+        _take_karma(user_id)
+    return '%s has %s karma' % (user_nick, _get_karma(user_id))
+
 
 def get_karma_cmd(client, message, args):
     if not _file_loaded:
@@ -57,6 +75,14 @@ def _add_karma(user_id):
         user_data[user_id] = 1
     else:
         user_data[user_id] += 1
+    _set_karma_time(user_id)
+    save_karma()
+
+def _take_karma(user_id):
+    if user_id not in user_data:
+        user_data[user_id] = -1
+    else:
+        user_data[user_id] -= 1
     _set_karma_time(user_id)
     save_karma()
 

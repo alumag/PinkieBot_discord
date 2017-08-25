@@ -5,7 +5,7 @@ import threading
 import re
 
 from commands import commands, async_commands
-
+from karma import _take_karma
 import random
 import string
 
@@ -61,6 +61,7 @@ async def on_ready():
 async def on_message(message):
     if re.match("^ע[ד]+[ ]*מת[י]+$",message.content):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
+        _take_karma(message.author.id)
         return
 		
     if message.content.startswith('$'):
