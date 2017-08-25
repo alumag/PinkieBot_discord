@@ -27,3 +27,9 @@ convert VAL
 
 def PHARSE
     find a definition for PHARSE, works for Hebrew and English
+
+give @USER
+    give 1 karma to a user
+
+karma @USER
+    check how much karma a user has

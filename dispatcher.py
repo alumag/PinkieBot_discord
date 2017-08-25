@@ -18,6 +18,7 @@ unverified = {}
 
 user_kick_timeout = 700
 
+
 async def destroy(member):
     await asyncio.sleep(user_kick_timeout)
     try:
@@ -28,10 +29,11 @@ async def destroy(member):
         await client.send_message(member.server, 'Member is too stronk')
     finally:
         unverified.pop(member)
-    
+
 
 def generate_captcha():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
 
 @client.event
 async def on_member_join(member):
@@ -61,7 +63,7 @@ async def on_message(message):
 
         if command not in ['ddg', 'convert', 'clear']:
             if message.channel.name != 'bot':
-    	        return
+                return
 
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
@@ -83,7 +85,8 @@ async def on_message(message):
             await client.send_message(message.channel,
                                       message.author.mention + ' thanks!')
             unverified.pop(message.author)
-    # if message.content == 'DEBUG JOIN':
-    #     await on_member_join(message.author)
+            # if message.content == 'DEBUG JOIN':
+            #     await on_member_join(message.author)
+
 
 client.run(token)
