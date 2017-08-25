@@ -2,6 +2,7 @@ import discord
 import asyncio
 import time
 import threading
+import re
 
 from commands import commands
 
@@ -36,7 +37,7 @@ def generate_captcha():
 @client.event
 async def on_member_join(member):
     server = member.server
-    fmt = "Welcome {0.mention}!\n Please type the following message in order to verify that you're a human: {1}"
+    fmt = "Welcome {0.mention}!\n Please type the following message in order to verify that you're a human: `{1}`"
 
     if member not in unverified.keys():
         captcha = generate_captcha()
@@ -56,30 +57,31 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if re.match("^ע[ד]+[ ]*מת[י]+$",message.content):
+        await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
+        return
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
 
         if command not in ['ddg', 'convert']:
-            if message.channel.name != 'bot':
-    	        return
+            if 'bot' not in message.channel.name:
+                 await client.send_message(message.author, '"${}" is not supported in none-bot channel!'.format(command))
+                 return
 
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
             ret = commands[command](client, message, args)
             if type(ret) is str:
-                await client.send_message(message.channel,
-                                          message.author.mention + '\n' + commands[command](client, message, args))
+                await client.send_message(message.channel, message.author.mention + '\n' + commands[command](client, message, args))
             elif type(ret) is discord.Embed:
                 await client.send_message(message.channel, message.author.mention, embed=ret)
         else:
-            await client.send_message(message.channel,
-                                      message.author.mention + '\n"${}" is not supported!'.format(command))
+            await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
     if message.author in unverified.keys():
         if message.content == unverified[message.author]:
             await client.send_message(message.channel,
                                       message.author.mention + ' thanks!')
             unverified.pop(message.author)
-    # if message.content == 'DEBUG JOIN':
-    #     await on_member_join(message.author)
+               
 
 client.run(token)
