@@ -84,11 +84,17 @@ async def on_message(message):
         elif command in async_commands:
             await async_commands[command](client, message, args)
 
-        elif command in karma_store_cmds and 'karma-store' == message.channel.name:
-            await karma_store_cmds[command](client, message, args)
+        elif 'karma-store' == message.channel.name:
+            if command in karma_store_cmds:
+                await karma_store_cmds[command](client, message, args)
+            else:
+                await client.delete_message(message)
 
         else:
             await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
+
+    elif 'karma-store' == message.channel.name:
+        await client.delete_message(message)
     if message.author in unverified.keys():
         if message.content == unverified[message.author]:
             await client.send_message(message.channel,
