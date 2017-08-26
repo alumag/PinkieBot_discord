@@ -13,6 +13,8 @@ from eight_ball_cmd import eight_ball_cmd
 from clear_messages import clear_messages
 from emojiwrite import emojiwrite
 
+from urllib.parse import quote_plus
+
 doc_file = open('help_file.txt')
 doc_str = doc_file.read()
 doc_file.close()
@@ -30,10 +32,10 @@ def documentation_cmd(client, message, args):
 def test_command(client, message, args):
     return 'testing, args: ' + args
 
-
+	
 def bill_cmd(client, message, args):
     return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m' \
-        .format(message.author.display_name)
+        .format(quote_plus(message.author.display_name))
 
 
 def uuid_cmd(client, message, args):

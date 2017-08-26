@@ -61,6 +61,8 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if message.author.id == "154208270649786368" or message.author.id == "186826633053732866": # spammer. TODO: add somthing against spam
+        return
     if re.match("^ע[ד]+[ ]*מת[י]+$",message.content):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
         _take_karma(message.author.id)
