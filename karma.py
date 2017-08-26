@@ -55,7 +55,7 @@ def get_karma_cmd(client, message, args):
         if user_nick is None:
             user_nick = message.mentions[0].name
     except:
-        return ' No user specified!'
+        return ' You have %s karma' % (_get_karma(message.author.id))
     return '%s has %s karma' % (user_nick, _get_karma(user_id))
 
 
