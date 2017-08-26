@@ -3,17 +3,19 @@ import asyncio
 import time
 import threading
 import re
-
+import sys
 from commands import commands, async_commands, karma_store_cmds
 from karma import _take_karma, user_data
 import random
 import string
 
-client = discord.Client()
-token = open('token.txt').read().strip('\n')
+token_path = 'token.txt'
+if len(sys.argv) > 1:
+    token_path = sys.argv[1]
 
-main_server = 'SecHubIL'
-main_channel = 'general'
+client = discord.Client()
+token = open(token_path).read().strip('\n')
+
 
 unverified = {}
 
