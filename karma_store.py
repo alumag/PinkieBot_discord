@@ -31,8 +31,7 @@ async def buy(client, member, index):
         if wanted.type == 'role':
             role_obj = find_role_by_name(member.server.roles, wanted.value)
             await _set_role(client, member, role_obj)
-    else:
-        return
+    await client.send_message(member, 'Insufficient funds. Get more karma by helping other users')
 
 
 async def _set_role(client, member, role):
