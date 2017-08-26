@@ -30,6 +30,12 @@ def PHARSE
 
 give @USER
     give 1 karma to a user
+	
+take @USER
+    take 1 karma to a user (Admins only)
 
 karma @USER
     check how much karma a user has
+	
+writmoji PHARSE
+	write the phrase with emojies
