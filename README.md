@@ -1,6 +1,26 @@
 # Pinkie Pie Discord bot
-A discord bot for cool stuff
 
-Written by Aluma (Pinkie Pie) and Shahar (MexicanOS)
+Pinkie Pie is a cyber bot that can do cyber things!
+  - Search things on duckduckgo
+  - Search phrase on urban dictionary
+  - Convert ascii and unicode into everything!
+  - Karma system - with PinkiePie you can thank people!
 
-using the basic bot: github.com/shaharrose/ScubilDiscord
+# New Features!
+
+  - Karma system
+  - WritMoji
+
+### Installation
+##### Just click the link!
+[Pinkie Pie Discord](https://discordapp.com/oauth2/authorize?&client_id=342379387997519872&scope=bot&permissions=10)
+
+### Todos
+ - Auto initial when join a server
+ - Add better database
+
+License
+Thanks [Shaharrose and noam pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot
+----
+
+**Aluma (PinkiePie) & Shahar (MexicanOS) 2017**
