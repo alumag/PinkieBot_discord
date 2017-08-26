@@ -1,0 +1,46 @@
+from karma import _get_karma, _take_karma
+import collections
+
+Item = collections.namedtuple('Item', 'name,type,value,price')
+
+items = [
+    Item(name='1337 - Role', type='role', value='1337', price=30),
+    Item(name='Cyber - Role', type='role', value='Cyber', price=20),
+    Item(name='root - Role', type='role', value='root', price=10),
+    Item(name='Skid - Role', type='role', value='Skid', price=5),
+]
+
+async def buy_item(client, message, args):
+    try:
+        index = int(args)
+    except:
+        await client.send_message(message.author, 'Syntax error when buying')
+        return
+    await buy(client, message.author, index)
+    await client.delete_message(message)
+
+async def buy(client, member, index):
+    try:
+        wanted = items[index]
+    except:
+        await client.send_message(member, 'Invalid item selected')
+        return
+    user_id = member.id
+    if _get_karma(user_id) >= wanted.price:
+        _take_karma(user_id, wanted.price)
+        if wanted.type == 'role':
+            role_obj = find_role_by_name(member.server.roles, wanted.value)
+            await _set_role(client, member, role_obj)
+    else:
+        return
+
+
+async def _set_role(client, member, role):
+    await client.add_roles(member, role)
+
+
+def find_role_by_name(roles, name):
+    for role in roles:
+        if role.name.upper() == name.upper():
+            return role
+    return None
