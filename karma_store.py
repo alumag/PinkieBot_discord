@@ -15,6 +15,7 @@ async def buy_item(client, message, args):
         index = int(args)
     except:
         await client.send_message(message.author, 'Syntax error when buying')
+        await client.delete_message(message)
         return
     await buy(client, message.author, index)
     await client.delete_message(message)
