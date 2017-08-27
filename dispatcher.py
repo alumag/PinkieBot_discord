@@ -16,7 +16,6 @@ if len(sys.argv) > 1:
 client = discord.Client()
 token = open(token_path).read().strip('\n')
 
-
 unverified = {}
 
 user_kick_timeout = 700
@@ -57,13 +56,14 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+    await client.change_presence(game=discord.Game(name="Cyber"))
 
 
 @client.event
 async def on_message(message):
-    if message.author.id == "154208270649786368" or message.author.id == "186826633053732866": # spammer. TODO: add somthing against spam
+    if message.author.id == "154208270649786368" or message.author.id == "186826633053732866":  # spammer. TODO: add somthing against spam
         return
-    if re.match("^ע[ד]+[ ]*מת[י]+$",message.content):
+    if re.match("^ע[ד]+[ ]*מת[י]+$", message.content):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
         _take_karma(message.author.id)
         return
@@ -71,11 +71,14 @@ async def on_message(message):
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
 
-
         if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
-                 await client.send_message(message.author, '"${}" is not supported in none-bot channel!'.format(command))
-                 return
+                tmp = await client.send_message(message.channel,
+                                                message.author.mention + ' "${}" is supported only on bot-related channels'.format(
+                                                    command))
+                await asyncio.sleep(3)
+                await client.delete_messages([tmp, message])
+                return
 
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
@@ -96,7 +99,8 @@ async def on_message(message):
                 await client.delete_message(message)
 
         else:
-            await client.send_message(message.channel, message.author.mention + '\n"${}" is not supported!'.format(command))
+            await client.send_message(message.channel,
+                                      message.author.mention + '\n"${}" is not supported!'.format(command))
 
     elif 'karma-store' == message.channel.name:
         await client.delete_message(message)
@@ -105,5 +109,6 @@ async def on_message(message):
             await client.send_message(message.channel,
                                       message.author.mention + ' thanks!')
             unverified.pop(message.author)
+
 
 client.run(token)
