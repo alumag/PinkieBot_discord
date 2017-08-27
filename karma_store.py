@@ -28,11 +28,21 @@ async def buy(client, member, index):
         return
     user_id = member.id
     if _get_karma(user_id) >= wanted.price:
-        _take_karma(user_id, wanted.price)
         if wanted.type == 'role':
             role_obj = find_role_by_name(member.server.roles, wanted.value)
-            await _set_role(client, member, role_obj)
-    await client.send_message(member, 'Insufficient funds. Get more karma by helping other users')
+            if role_obj is None:
+                await client.send_message(member, "The role " + wanted.value + " is not exists at this server")
+            else:
+                try:
+                    await _set_role(client, member, role_obj)
+                    _take_karma(user_id, wanted.price)
+                    await client.send_message(member, "You just bought the role " + wanted.value + ". Yay!!")
+                except Exception as e:
+                    await client.send_message(member,
+                                              'There was an error, if you really wanna know why:\n```\n'
+                                              + str(e) + '\n```')
+    else:
+        await client.send_message(member, 'Insufficient funds. Get more karma by helping other users')
 
 
 async def _set_role(client, member, role):
