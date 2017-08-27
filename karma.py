@@ -1,6 +1,6 @@
 import os
 import pickle
-
+from discord import Embed
 import time
 
 import utils
@@ -11,10 +11,35 @@ _file_loaded = False
 _last_karma_time = {}
 _time_between_karma = 60 * 30  # half an hour, in seconds
 
+def get_karma_embed(member, karma):
+    em = Embed(title="Karma balance", color=0x0080ff)
+    _url = member.avatar_url
+    if _url is None:
+        _url = member.default_avatar
+
+    em.set_thumbnail(url=_url)
+    em.add_field(name="User: %s" % member.name, value="Karma: %d" % karma, inline=False)
+
+    return em
+
+def set_karma_embed(member, karma):
+    em = Embed(color=0x00ff40)
+
+    _url = member.avatar_url
+    if _url is None:
+        _url = member.default_avatar
+
+    em.set_author(name="%s#%s" % (member.name, member.discriminator), icon_url=_url)
+    em.set_footer(text="User was given %d karma points!" % karma)
+
+    return em
+
+
 
 def add_karma_cmd(client, message, args):
     if not _file_loaded:
         load_karma()
+
     try:
         user_id = message.mentions[0].id
         user_nick = message.mentions[0].nick
@@ -43,7 +68,7 @@ def set_karma_cmd(client, message, args):
         print(e)
         return ' No user specified!'
     _set_karma(user_id, num)
-    return '%s has %s karma' % (user_nick, _get_karma(user_id))
+    return set_karma_embed(message.mentions[0], num)
 
 
 def get_karma_cmd(client, message, args):
@@ -55,8 +80,8 @@ def get_karma_cmd(client, message, args):
         if user_nick is None:
             user_nick = message.mentions[0].name
     except:
-        return ' You have %s karma' % (_get_karma(message.author.id))
-    return '%s has %s karma' % (user_nick, _get_karma(user_id))
+        return get_karma_embed(message.author,_get_karma(message.author.id))
+    return get_karma_embed(message.mentions[0], _get_karma(user_id))
 
 
 def _set_karma_time(user_id):

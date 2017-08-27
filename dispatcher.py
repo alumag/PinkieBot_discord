@@ -57,6 +57,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+    await client.change_presence(game=discord.Game(name="Cyber"))
 
 
 @client.event
@@ -74,8 +75,11 @@ async def on_message(message):
 
         if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
-                 await client.send_message(message.author, '"${}" is not supported in none-bot channel!'.format(command))
+                 tmp = await client.send_message(message.channel, message.author.mention + ' "${}" is supported only on bot-related channels'.format(command))
+                 await asyncio.sleep(3)
+                 await client.delete_messages([tmp,message])
                  return
+
 
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
