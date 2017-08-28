@@ -74,6 +74,7 @@ def set_karma_cmd(client, message, args):
     _set_karma(sender_id, target_id, num)
     return set_karma_embed(message.mentions[0], num)
 
+
 @utils.admin
 def take_karma_cmd(client, message, args):
     if not _file_loaded:
@@ -123,14 +124,6 @@ def _add_karma(sender_id, target_id):
     else:
         user_data[target_id] += 1
     _set_karma_time(sender_id, target_id)
-    save_karma()
-
-def _take_karma(user_id):
-    if user_id not in user_data:
-        user_data[user_id] = -1
-    else:
-        user_data[user_id] -= 1
-    _set_karma_time(user_id)
     save_karma()
 
 
