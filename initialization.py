@@ -6,7 +6,7 @@ FILE_NAME = "config.js"
 try:
     open(FILE_NAME).close()
 except IOError:
-    open(FILE_NAME, 'w').close()
+    open(FILE_NAME, 'w', encoding='UTF-8').close()
 
 
 def init_file(file_name):
@@ -21,13 +21,13 @@ def init_file(file_name):
     role = discord.Role(server=discord.Server(id=0))
 
     the_config = {'roles': [role]}
-    with open(file_name, 'w') as file:
-        json.dump(the_config, file, default=to_json, indent=4)
+    with open(file_name, 'w', encoding='UTF-8') as file:
+        json.dump(the_config, file, default=to_json, indent=4, ensure_ascii=False)
 
-    js = json.dumps(the_config, default=to_json, indent=2)
+    js = json.dumps(the_config, default=to_json, indent=2, ensure_ascii=False)
     js_role = json.loads(js, object_hook=from_json)
 
-    new_js = json.dumps(js_role, default=to_json, indent=2)
+    new_js = json.dumps(js_role, default=to_json, indent=2, ensure_ascii=False)
     print(js == new_js)
 
 
