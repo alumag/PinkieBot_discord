@@ -2,7 +2,7 @@
 
 Pinkie Pie is a cyber bot that can do cyber things!
   - Search things on duckduckgo
-  - Search phrase on urban dictionary
+  - Search phrases on urban dictionary
   - Convert ascii and unicode into everything!
   - Karma system - with PinkiePie you can thank people!
 
@@ -23,4 +23,4 @@ License
 Thanks [Shaharrose and noam pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot
 ----
 
-**Aluma (PinkiePie) & Shahar (MexicanOS) 2017**
+**Aluma (PinkiePie), Shahar (MexicanOS) and Meitar (MeitarR) 2017**
