@@ -4,9 +4,9 @@ import discord
 FILE_NAME = "config.js"
 
 try:
-    open(FILE_NAME).close()
-except IOError:
-    open(FILE_NAME, 'w', encoding='UTF-8').close()
+    open(FILE_NAME, 'x', encoding='UTF-8').close()
+except FileExistsError:
+    pass
 
 
 def init_file(file_name):
@@ -19,8 +19,9 @@ def init_file(file_name):
     """
 
     role = discord.Role(server=discord.Server(id=0))
+    channel = discord.Channel(server=discord.Server(id=0))
 
-    the_config = {'roles': [role]}
+    the_config = {'roles': [role], 'channels': [channel]}
     with open(file_name, 'w', encoding='UTF-8') as file:
         json.dump(the_config, file, default=to_json, indent=4, ensure_ascii=False)
 
@@ -63,6 +64,10 @@ def to_json(obj):
             }
     elif isinstance(obj, discord.colour.Colour):
         return obj.value
+    elif isinstance(obj, discord.Channel):
+        [obj.__slots__.remove(to_remove)
+         for to_remove in ['voice_members', 'id', 'server', 'position', 'is_private', 'bitrate']
+         if to_remove in obj.__slots__]
     raise TypeError(repr(obj) + ' is not JSON serializable')
 
 
