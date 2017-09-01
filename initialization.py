@@ -1,4 +1,7 @@
 import json
+import asyncio
+from pprint import pprint
+
 import discord
 
 FILE_NAME = "config.js"
@@ -41,6 +44,41 @@ def init_file(file_name):
     """
 
 
+async def load_config_to_server(client, file_name, server_id):
+    """
+    Loads the config from the file and implements the config to the server
+
+    :param client: the discord's client object
+    :type client: discord.Client
+    :param file_name: the name of the file
+    :type file_name: str
+    :param server_id: the id of the server
+    :type server_id: str
+    :return: if success True else return False
+    """
+
+    with open(file_name, encoding='UTF-8') as file:
+        obj = json.load(file, object_hook=from_json)  # type: dict
+
+    roles, channels = obj.get('roles', []), obj.get('channels', [])
+
+    for role in roles:  # type: discord.Role
+        try:
+            await client.create_role(client.get_server(server_id), **to_json(role)['__value__'])
+            pprint(to_json(role)['__value__'])
+            print("created role")
+        except discord.Forbidden as e:
+            # log it
+            print("failed created role")
+            return False
+
+
+async def init_cmd(client, message, args):
+    print("in cmd")
+    print("bug on ubuntu...")
+    # await load_config_to_server(client, FILE_NAME, message.server.id)
+
+
 def to_json(obj):
     """
     Convert objects to json format
@@ -48,6 +86,7 @@ def to_json(obj):
     :param obj: the object
     :return: json object as string
     """
+
     if isinstance(obj, discord.Role):
         [obj.__slots__.remove(to_remove)
          for to_remove in ['id', 'colour', 'managed', 'server', 'position']
