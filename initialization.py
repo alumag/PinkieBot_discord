@@ -2,6 +2,7 @@ import json
 import discord
 
 FILE_NAME = "config.js"
+channel_types = list(discord.ChannelType.__members__.values())
 
 try:
     open(FILE_NAME, 'x', encoding='UTF-8').close()
@@ -19,7 +20,8 @@ def init_file(file_name):
     """
 
     role = discord.Role(server=discord.Server(id=0))
-    channel = discord.Channel(server=discord.Server(id=0))
+    channel = discord.Channel(server=discord.Server(id=0), type=0)
+    print(channel.type)
 
     the_config = {'roles': [role], 'channels': [channel]}
     with open(file_name, 'w', encoding='UTF-8') as file:
@@ -29,7 +31,13 @@ def init_file(file_name):
     js_role = json.loads(js, object_hook=from_json)
 
     new_js = json.dumps(js_role, default=to_json, indent=2, ensure_ascii=False)
-    print(js == new_js)
+    if js == new_js:
+        print("all good!!")
+    else:
+        print("\n\njs:")
+        print(js)
+        print("\n\nnew_js:")
+        print(new_js)
 
 
 def to_json(obj):
@@ -68,6 +76,17 @@ def to_json(obj):
         [obj.__slots__.remove(to_remove)
          for to_remove in ['voice_members', 'id', 'server', 'position', 'is_private', 'bitrate']
          if to_remove in obj.__slots__]
+        return \
+            {
+                '__class__': 'discord.Channel',
+                '__value__':
+                    {
+                        name: obj.__getattribute__(name)
+                        for name in obj.__slots__
+                    }
+            }
+    elif isinstance(obj, discord.ChannelType):
+        return str(obj)
     raise TypeError(repr(obj) + ' is not JSON serializable')
 
 
@@ -85,6 +104,9 @@ def from_json(obj):
             return discord.Role(**obj['__value__'])
         elif obj['__class__'] == 'discord.Permissions':
             return discord.Permissions(**obj['__value__']).value
+        elif obj['__class__'] == 'discord.Channel':
+            obj['__value__']['server'] = discord.Server(id=0)
+            return discord.Channel(**obj['__value__'])
     return obj
 
 
