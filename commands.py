@@ -12,6 +12,7 @@ from urban_cmd import query_urban_dictionary
 from eight_ball_cmd import eight_ball_cmd
 from clear_messages import clear_messages
 from emojiwrite import emojiwrite
+from initialization import init_cmd
 
 from urllib.parse import quote_plus
 
@@ -32,7 +33,7 @@ def documentation_cmd(client, message, args):
 def test_command(client, message, args):
     return 'testing, args: ' + args
 
-	
+
 def bill_cmd(client, message, args):
     return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m' \
         .format(quote_plus(message.author.display_name))
@@ -64,6 +65,7 @@ commands = {
     'setkarma': set_karma_cmd,
     'karma': get_karma_cmd,
     'writmoji': emojiwrite,
+    'init': init_cmd,
 }
 
 karma_store_cmds = {
