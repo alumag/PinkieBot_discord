@@ -19,7 +19,8 @@ token = open(token_path).read().strip('\n')
 unverified = {}
 
 user_kick_timeout = 700
-
+eng = "poiuytrewqlkjhgfdsamnbvcxz"
+heb = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
 
 async def destroy(member):
     await asyncio.sleep(user_kick_timeout)
@@ -70,7 +71,10 @@ async def on_message(message):
 
     if message.content.startswith('$'):
         command = message.content.strip('$').split(' ')[0]
-
+        if  all([*map(lambda c:(c in heb),command)]) == True:
+            command = ''.join([*map(lambda x:(eng[heb.index(x)]),command)])
+		
+		
         if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
                 tmp = await client.send_message(message.channel,
