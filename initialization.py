@@ -2,7 +2,6 @@ import json
 import discord
 
 FILE_NAME = "config.js"
-channel_types = list(discord.ChannelType.__members__.values())
 
 try:
     open(FILE_NAME, 'x', encoding='UTF-8').close()
@@ -19,18 +18,19 @@ def init_file(file_name):
     :return: None
     """
 
-    role = discord.Role(server=discord.Server(id=0))
-    channel = discord.Channel(server=discord.Server(id=0), type=0)
-    print(channel.type)
+    role = discord.Role(name="Default-Role", server=discord.Server(id=0))
+    channel = discord.Channel(name="Default-Channel", topic="Its the Default-Channel's topic, please change it", server=discord.Server(id=0), type=0)
 
     the_config = {'roles': [role], 'channels': [channel]}
     with open(file_name, 'w', encoding='UTF-8') as file:
         json.dump(the_config, file, default=to_json, indent=4, ensure_ascii=False)
 
+    # for testing:
+    """
     js = json.dumps(the_config, default=to_json, indent=2, ensure_ascii=False)
-    js_role = json.loads(js, object_hook=from_json)
+    new_obj = json.loads(js, object_hook=from_json)
 
-    new_js = json.dumps(js_role, default=to_json, indent=2, ensure_ascii=False)
+    new_js = json.dumps(new_obj, default=to_json, indent=2, ensure_ascii=False)
     if js == new_js:
         print("all good!!")
     else:
@@ -38,6 +38,7 @@ def init_file(file_name):
         print(js)
         print("\n\nnew_js:")
         print(new_js)
+    """
 
 
 def to_json(obj):
@@ -74,7 +75,8 @@ def to_json(obj):
         return obj.value
     elif isinstance(obj, discord.Channel):
         [obj.__slots__.remove(to_remove)
-         for to_remove in ['voice_members', 'id', 'server', 'position', 'is_private', 'bitrate']
+         for to_remove in ['voice_members', 'id', 'server', 'position',
+                           'is_private', 'bitrate', '_permission_overwrites']
          if to_remove in obj.__slots__]
         return \
             {
