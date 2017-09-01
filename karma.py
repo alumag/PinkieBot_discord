@@ -67,6 +67,8 @@ def set_karma_cmd(client, message, args):
         user_nick = message.mentions[0].nick
         if user_nick is None:
             user_nick = message.mentions[0].name
+        if(not args.split(' ')[1].isnumeric()):
+            return ' This is not a number'
         num = int(args.split(' ')[1])
     except Exception as e:
         print(e)
