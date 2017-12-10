@@ -14,19 +14,19 @@ def function_registerer():
     """
     functions_list = []
 
-    def registrar_warp(name, available_at=None):
-        if available_at is None:
-            channels = None
+    def registrar_warp(name, channels=None):
+        if channels is None:
+            the_channels = None
         else:
-            channels = []
-            for ch_name in available_at:
+            the_channels = []
+            for ch_name in channels:
                 if ch_name.startswith('#'):
-                    channels.append(ChannelName(string=ch_name[1:], is_part=False))
+                    the_channels.append(ChannelName(string=ch_name[1:], is_part=False))
                 else:
-                    channels.append(ChannelName(string=ch_name, is_part=True))
+                    the_channels.append(ChannelName(string=ch_name, is_part=True))
 
         def registrar(func):
-            functions_list.append(Command(name=name, function=func, channels=channels))
+            functions_list.append(Command(name=name, function=func, channels=the_channels))
             return func
 
         return registrar
