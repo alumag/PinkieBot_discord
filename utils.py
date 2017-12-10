@@ -46,9 +46,9 @@ def admin(func):
 
 def is_right_channel(name_str, channel_name):
     if channel_name.is_part:
-        return name_str in channel_name
+        return channel_name.string in name_str
     else:
-        return name_str == channel_name.string
+        return channel_name.string == name_str
 
 
 register_command = function_registerer()
