@@ -1,12 +1,12 @@
 import os
 import sys
+import utils
 import random
 import string
 import discord
 import asyncio
 
 from collections import namedtuple
-
 
 DIR = os.path.dirname(__file__) + '/'
 TOKEN_PATH = 'token.txt'
@@ -17,7 +17,11 @@ if len(sys.argv) > 1:
     TOKEN_PATH = sys.argv[1]
 TOKEN = open(TOKEN_PATH).read().strip('\n')
 
+ENG_KEYS = "poiuytrewqlkjhgfdsamnbvcxz"
+HEB_KEYS = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
+
 MemberOnServer = namedtuple('MemberOnServer', 'user server')
+Command = namedtuple('Command', 'function channels')
 
 client = discord.Client()
 unverified = {}
@@ -39,7 +43,12 @@ async def destroy(member):
 
 
 def generate_captcha():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    captcha = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+    if captcha.startswith(CMD_SIGN):
+        return generate_captcha()
+    else:
+        return captcha
 
 
 @client.event
@@ -68,13 +77,65 @@ async def on_ready():
     await client.change_presence(game=discord.Game(name="Cyber"))
 
 
+async def process_cmd(message):
+    split = message.content[1:].split()
+    cmd = split[0]
+    args = split[1:]
+
+    if all([*map(lambda c: (c in HEB_KEYS), cmd)]):
+        cmd = ''.join([*map(lambda x: (ENG_KEYS[HEB_KEYS.index(x)]), cmd)])
+
+    if cmd in commands.keys():
+        if commands[cmd].channels is None or \
+                any([utils.is_right_channel(message.channel.name, channel) for channel in commands[cmd].channels]):
+            await commands[cmd].function(client, message, args)
+        else:
+            await client.send_message(message.channel, '**Oops...**  you can\'t use that command in this channel!')
+    else:
+        await client.send_message(message.channel, '**Oops...**  unknown command *{1}{0}* \n'
+                                                   '(use {1}help to see the list of commands)'.format(cmd, CMD_SIGN))
+
+
+@utils.register_command(name='help')
+async def get_help(bot, message, args):
+    """
+    Sends a 'help' message
+    ***----***
+    """
+    help_msg = "**__Help:__**\n\n"
+
+    for command_name, command_func, command_channels in utils.register_command.functions_list:
+        if hasattr(command_func, '__doc__') and isinstance(command_func.__doc__, str):
+            doc = command_func.__doc__.split("***----***")[0].lstrip().rstrip()
+        else:
+            doc = ""
+        help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
+    await bot.send_message(message.channel, help_msg)
+
+
+@utils.register_command(name='ping', channels=['bot'])
+async def ping_cmd(bot, message, args):
+    """
+    return a pong
+    ***----***
+    """
+    await bot.send_message(message.channel, "Pong!")
+
+
 @client.event
 async def on_message(message):
-    member = MemberOnServer(user=message.author, server=message.server)
-    if member in unverified.keys():
-        if message.content == unverified[member]:
-            await client.send_message(message.channel, member.user.mention + ' thanks!')
-            unverified.pop(member)
+    if message.author == client.user:
+        return
+    elif message.content.startswith(CMD_SIGN):
+        await process_cmd(message)
+    else:
+        member = MemberOnServer(user=message.author, server=message.server)
+        if member in unverified.keys():
+            if message.content == unverified[member]:
+                await client.send_message(message.channel, member.user.mention + ' thanks!')
+                unverified.pop(member)
 
+for cmd_name, cmd_func, cmd_channels in utils.register_command.functions_list:
+    commands[cmd_name] = Command(function=cmd_func, channels=cmd_channels)
 
 client.run(TOKEN)
