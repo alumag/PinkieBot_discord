@@ -7,6 +7,7 @@ import discord
 import asyncio
 
 from collections import namedtuple
+from plugins import *
 
 DIR = os.path.dirname(__file__) + '/'
 TOKEN_PATH = 'token.txt'
@@ -100,26 +101,17 @@ async def process_cmd(message):
 async def get_help(bot, message, args):
     """
     Sends a 'help' message
-    ***----***
+    [END-D]
     """
     help_msg = "**__Help:__**\n\n"
 
     for command_name, command_func, command_channels in utils.register_command.functions_list:
         if hasattr(command_func, '__doc__') and isinstance(command_func.__doc__, str):
-            doc = command_func.__doc__.split("***----***")[0].lstrip().rstrip()
+            doc = command_func.__doc__.split("[END-D]")[0].lstrip().rstrip()
         else:
             doc = ""
         help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
     await bot.send_message(message.channel, help_msg)
-
-
-@utils.register_command(name='ping', channels=['bot'])
-async def ping_cmd(bot, message, args):
-    """
-    return a pong
-    ***----***
-    """
-    await bot.send_message(message.channel, "Pong!")
 
 
 @client.event
