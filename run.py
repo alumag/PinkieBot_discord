@@ -1,22 +1,20 @@
 import os
-import asyncio
 import random
 import string
-from collections import namedtuple
-
+import asyncio
 import discord
 
+from collections import namedtuple
+
+from plugins import *
 from cybot import client, utils
 from cybot.settings import (
     TOKEN,
     user_kick_timeout,
-    eng, heb
+    eng, heb,
+    CMD_SIGN
 )
-from plugins import *
 
-DIR = os.path.dirname(__file__) + '/'
-TOKEN_PATH = 'token.txt'
-CMD_SIGN = '$'
 
 MemberOnServer = namedtuple('MemberOnServer', 'user server')
 Command = namedtuple('Command', 'function channels')
