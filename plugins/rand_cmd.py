@@ -1,9 +1,10 @@
 from random import randint
+from discord import Message
 from cybot import utils, client
 
 
 @utils.register_command(name='rand', channels=['bot'])
-async def rand_cmd(message, args):
+async def rand_cmd(message: Message, args: [str]):
     """
     rand START END: generate a random number between START & END
     [END-D]
