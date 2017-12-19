@@ -1,13 +1,13 @@
-import discord
 import asyncio
-import time
-import threading
-import re
-import sys
-from commands import commands, async_commands, karma_store_cmds
-from karma import _take_karma, user_data
 import random
+import re
 import string
+import sys
+
+import discord
+
+from commands import commands, async_commands, karma_store_cmds
+from commands.karma import _take_karma
 
 token_path = 'token.txt'
 if len(sys.argv) > 1:
@@ -21,6 +21,7 @@ unverified = {}
 user_kick_timeout = 700
 eng = "poiuytrewqlkjhgfdsamnbvcxz"
 heb = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
+
 
 async def destroy(member):
     await asyncio.sleep(user_kick_timeout)
@@ -62,8 +63,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    #if message.author.id == "154208270649786368" or message.author.id == "186826633053732866":  # spammer. TODO: add somthing against spam
-    #   return
     if re.match("^ע[ד]+[ ]*מת[י]+$", message.content):
         await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
         _take_karma(message.author.id)
@@ -73,8 +72,7 @@ async def on_message(message):
         command = message.content.strip('$').split(' ')[0]
         if  all([*map(lambda c:(c in heb),command)]) == True:
             command = ''.join([*map(lambda x:(eng[heb.index(x)]),command)])
-		
-		
+
         if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
                 tmp = await client.send_message(message.channel,

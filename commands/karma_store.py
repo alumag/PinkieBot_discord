@@ -1,5 +1,6 @@
-from karma import _get_karma, _take_karma
 import collections
+
+from commands.karma import _get_karma, _take_karma
 
 Item = collections.namedtuple('Item', 'name,type,value,price')
 
