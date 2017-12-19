@@ -37,7 +37,7 @@ def set_karma_embed(member, karma):
     return em
 
 
-def add_karma_cmd(client, message, args):
+def add_karma_cmd(message, args):
     if not _file_loaded:
         load_karma()
     try:
@@ -58,7 +58,7 @@ def add_karma_cmd(client, message, args):
 
 
 @utils.admin
-def set_karma_cmd(client, message, args):
+def set_karma_cmd(message, args):
     if not _file_loaded:
         load_karma()
     try:
@@ -77,7 +77,7 @@ def set_karma_cmd(client, message, args):
     return set_karma_embed(message.mentions[0], num)
 
 @utils.admin
-def take_karma_cmd(client, message, args):
+def take_karma_cmd(message, args):
     if not _file_loaded:
         load_karma()
     try:
@@ -95,7 +95,7 @@ def take_karma_cmd(client, message, args):
     return '%s has %s karma' % (user_nick, _get_karma(user_id))
 
 
-def get_karma_cmd(client, message, args):
+def get_karma_cmd(message, args):
     if not _file_loaded:
         load_karma()
     try:
@@ -126,6 +126,7 @@ def _add_karma(sender_id, target_id):
         user_data[target_id] += 1
     _set_karma_time(sender_id, target_id)
     save_karma()
+
 
 def _take_karma(user_id):
     if user_id not in user_data:

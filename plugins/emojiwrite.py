@@ -1,6 +1,6 @@
 import string
 
-def emojiwrite(client, message, args):
+def emojiwrite(message, args):
 	msg = ""
 	print("in")
 	print(args)

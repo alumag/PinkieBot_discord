@@ -14,27 +14,27 @@ from plugins.rand_cmd import rand_cmd
 from plugins.urban_cmd import query_urban_dictionary
 
 from cybot.settings import DOC_TXT
+from cybot import client
 
-
-def help_cmd(client, message, args):
+def help_cmd(message, args):
     msg = "Available plugins:\n[" + ", ".join(commands.keys()) + "]"
     return msg
 
 
-def documentation_cmd(client, message, args):
+def documentation_cmd(message, args):
     return "```\n{}\n```".format(DOC_TXT)
 
 
-def test_command(client, message, args):
+def test_command(message, args):
     return 'testing, args: ' + args
 
 
-def bill_cmd(client, message, args):
+def bill_cmd(message, args):
     return 'http://belikebill.azurewebsites.net/billgen-API.php?default=1&name={}&sex=m' \
         .format(quote_plus(message.author.display_name))
 
 
-def uuid_cmd(client, message, args):
+def uuid_cmd(message, args):
     return str(uuid4())
 
 

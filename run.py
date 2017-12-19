@@ -5,7 +5,13 @@ import string
 
 import discord
 
-from cybot.settings import *
+from cybot import client
+from cybot.settings import (
+    TOKEN,
+    user_kick_timeout,
+    eng, heb
+)
+
 from plugins import commands, async_commands, karma_store_cmds
 from plugins.karma import _take_karma
 
@@ -65,15 +71,15 @@ async def on_message(message):
         if command not in ['ddg', 'convert', 'clear', 'buy']:
             if 'bot' not in message.channel.name:
                 tmp = await client.send_message(message.channel,
-                                                message.author.mention + ' "${}" is supported only on bot-related channels'.format(
-                                                    command))
+                                                message.author.mention + ' "${}" is supported only on bot-related'
+                                                                         ' channels'.format(command))
                 await asyncio.sleep(3)
                 await client.delete_messages([tmp, message])
                 return
 
         args = message.content.replace('$' + command + ' ', '', 1)
         if command in commands.keys():
-            ret = commands[command](client, message, args)
+            ret = commands[command](message, args)
             if type(ret) is str:
                 await client.send_message(message.channel, message.author.mention + '\n' + ret)
 
@@ -81,11 +87,11 @@ async def on_message(message):
                 await client.send_message(message.channel, message.author.mention, embed=ret)
 
         elif command in async_commands:
-            await async_commands[command](client, message, args)
+            await async_commands[command](message, args)
 
         elif 'karma-store' == message.channel.name:
             if command in karma_store_cmds:
-                await karma_store_cmds[command](client, message, args)
+                await karma_store_cmds[command](message, args)
             else:
                 await client.delete_message(message)
 

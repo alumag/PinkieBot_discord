@@ -1,7 +1,7 @@
 import discord
-import string
 
-def hex_to_dec_cmd(client, message, args):
+
+def hex_to_dec_cmd(message, args):
     if len(args) < 2:
         return 'Illegal'
     try:
@@ -13,7 +13,7 @@ def hex_to_dec_cmd(client, message, args):
         return 'Illegal'
 
 
-def dec_to_hex_cmd(client, message, args):
+def dec_to_hex_cmd(message, args):
     if len(args) < 2:
         return 'Illegal'
     try:
@@ -22,7 +22,8 @@ def dec_to_hex_cmd(client, message, args):
     except:
         return 'Illegal'
 
-def num_converter_cmd(client, message, args):
+
+def num_converter_cmd(message, args):
     try:
         num = args.split(' ')[0]
 

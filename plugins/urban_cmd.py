@@ -2,7 +2,7 @@ import urllib.request
 import json
 
 
-def query_urban_dictionary(client, message, args):
+def query_urban_dictionary(message, args):
 	try:
 		args = urllib.parse.quote(args)
 		query_data = urllib.request.urlopen(f'http://api.urbandictionary.com/v0/define?term={args}').read()

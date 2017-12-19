@@ -1,4 +1,4 @@
-def ord_cmd(client, message, args):
+def ord_cmd(message, args):
     if len(args) != 1:
         return 'Illegal'
     try:
@@ -9,7 +9,7 @@ def ord_cmd(client, message, args):
         return 'Illegal'
 
 
-def chr_cmd(client, message, args):
+def chr_cmd(message, args):
     if 'x' in args:
         try:
             args = str(int(args, 16))
