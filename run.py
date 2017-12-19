@@ -1,19 +1,17 @@
-import os
-import utils
+import asyncio
 import random
 import string
-import discord
-import asyncio
+from collections import namedtuple
 
-from plugins import *
-from cybot import client
+import discord
+
+from cybot import client, utils
 from cybot.settings import (
     TOKEN,
     user_kick_timeout,
     eng, heb
 )
-
-from collections import namedtuple
+from plugins import *
 
 DIR = os.path.dirname(__file__) + '/'
 TOKEN_PATH = 'token.txt'

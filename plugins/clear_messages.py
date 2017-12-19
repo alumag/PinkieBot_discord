@@ -1,5 +1,4 @@
-from cybot import client
-import utils
+from cybot import client, utils
 
 
 @utils.admin

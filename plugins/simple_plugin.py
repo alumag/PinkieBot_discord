@@ -1,5 +1,4 @@
-import utils
-from cybot import client
+from cybot import client, utils
 
 
 @utils.register_command(name='ping', channels=['bot'])

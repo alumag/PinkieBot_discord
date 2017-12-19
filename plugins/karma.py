@@ -1,9 +1,10 @@
 import os
 import pickle
-from discord import Embed
 import time
 
-import utils
+from discord import Embed
+
+from cybot import utils
 
 user_data = {}
 _karma_file = 'karma.pkl'
