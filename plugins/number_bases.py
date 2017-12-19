@@ -1,51 +1,79 @@
 import discord
+from discord import Message
+
+from cybot import utils, client
 
 
-def hex_to_dec_cmd(message, args):
-    if len(args) < 2:
-        return 'Illegal'
-    try:
-        result = str(int(args, 16))
-        if '0x' not in args.lower():
-            args = '0x' + args
-        return args + ' = ' + result
-    except:
-        return 'Illegal'
+@utils.register_command(name='hex2dec', channels=['bot'])
+async def hex_to_dec_cmd(message: Message, args: [str]):
+    """
+    hex2dec NUM: convert an hex number to decimal
+    """
+    if len(args) != 1:
+        ans = 'Illegal'
+    else:
+        args = ' '.join(args)
+        try:
+            result = str(int(args, 16))
+            if '0x' not in args.lower():
+                args = '0x' + args
+            ans = args + ' = ' + result
+        except:
+            ans = 'Illegal'
+    await client.send_message(message.channel, ans)
 
 
-def dec_to_hex_cmd(message, args):
-    if len(args) < 2:
-        return 'Illegal'
-    try:
-        num = int(args)
-        return hex(num)
-    except:
-        return 'Illegal'
+@utils.register_command(name='dec2hex', channels=['bot'])
+async def dec_to_hex_cmd(message: Message, args: [str]):
+    """
+    dec2hex NUM: convert a decimal number to hexadecimal
+    """
+    if len(args) != 1:
+        ans = 'Illegal'
+    else:
+        args = ' '.join(args)
+        try:
+            num = int(args)
+            ans = args + ' = ' + hex(num)
+        except:
+            ans = 'Illegal'
+    await client.send_message(message.channel, ans)
 
 
-def num_converter_cmd(message, args):
-    try:
-        num = args.split(' ')[0]
+@utils.register_command(name='convert', channels=['bot'])
+async def num_converter_cmd(message: Message, args: [str]):
+    """
+    convert VAL: convert VAL
+    """
+    if len(args) == 1:
+        try:
+            num = args[0]
 
-        if num.startswith('0x'):
-            decimal = int(num, 16)
-            char = chr(decimal)
-            octal = oct(decimal)
-            binary = bin(decimal)
-            hexa = num
-        elif num.isdigit():
-            decimal = int(num)
-            char = chr(decimal)
-            octal = oct(decimal)
-            binary = bin(decimal)
-            hexa = hex(decimal)
-        else:
-            decimal = ord(num)
-            char = num
-            octal = oct(decimal)
-            binary = bin(decimal)
-            hexa = hex(decimal)
+            if num.startswith('0x'):
+                decimal = int(num, 16)
+                char = chr(decimal)
+                octal = oct(decimal)
+                binary = bin(decimal)
+                hexa = num
+            elif num.isdigit():
+                decimal = int(num)
+                char = chr(decimal)
+                octal = oct(decimal)
+                binary = bin(decimal)
+                hexa = hex(decimal)
+            else:
+                decimal = ord(num)
+                char = num
+                octal = oct(decimal)
+                binary = bin(decimal)
+                hexa = hex(decimal)
 
-        return discord.Embed(title='Conversion', description=f'Decimal: {decimal}\nHexadecimal: {hexa}\nOctal: {octal}\nBinary: {binary}\nUnicode: {char}', color=3447003)
-    except:
-        return discord.Embed(title='Sorry', description='Correct Usage: $convert <input>', color=0xff5b4c)
+            embed = discord.Embed(title='Conversion',
+                                  description=f'Decimal: {decimal}\nHexadecimal: {hexa}\nOctal: {octal}\nBinary: '
+                                              f'{binary}\nUnicode: {char}',
+                                  color=3447003)
+        except:
+            embed = discord.Embed(title='Sorry', description='Correct Usage: $convert <input>', color=0xff5b4c)
+    else:
+        embed = discord.Embed(title='Sorry', description='Correct Usage: $convert <input>', color=0xff5b4c)
+    await client.send_message(message.channel, message.author.mention, embed=embed)
