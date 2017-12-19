@@ -13,9 +13,7 @@ from plugins.number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_c
 from plugins.rand_cmd import rand_cmd
 from plugins.urban_cmd import query_urban_dictionary
 
-doc_file = open('help_file.txt')
-doc_str = doc_file.read()
-doc_file.close()
+from cybot.settings import DOC_TXT
 
 
 def help_cmd(client, message, args):
@@ -24,7 +22,7 @@ def help_cmd(client, message, args):
 
 
 def documentation_cmd(client, message, args):
-    return "```\n{}\n```".format(doc_str)
+    return "```\n{}\n```".format(DOC_TXT)
 
 
 def test_command(client, message, args):
