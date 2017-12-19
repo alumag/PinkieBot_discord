@@ -19,8 +19,6 @@ Pinkie Pie is a cyber bot that can do cyber things!
  - Auto initial when join a server
  - Add better database
 
-License
-Thanks [Shaharrose and noam pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot
-----
-
+### License
+Thanks [Shaharrose and noam pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot\
 **Aluma (PinkiePie), Shahar (MexicanOS) and Meitar (MeitarR) 2017**

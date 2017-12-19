@@ -14,7 +14,7 @@ from plugins.rand_cmd import rand_cmd
 from plugins.urban_cmd import query_urban_dictionary
 
 from cybot.settings import DOC_TXT
-from cybot import client
+
 
 def help_cmd(message, args):
     msg = "Available plugins:\n[" + ", ".join(commands.keys()) + "]"
@@ -39,15 +39,12 @@ def uuid_cmd(message, args):
 
 
 commands = {
-    # 'test': test_command,
     'help': help_cmd,
     'doc': documentation_cmd,
-    # 'calc': calc_cmd,
     'rand': rand_cmd,
     'ddg': query_ddg,
     'bill': bill_cmd,
     'urban': query_urban_dictionary,
-    # 'uuid': uuid_cmd,
     'hex2dec': hex_to_dec_cmd,
     'dec2hex': dec_to_hex_cmd,
     'ord': ord_cmd,
