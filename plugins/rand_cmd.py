@@ -7,7 +7,6 @@ from cybot import utils, client
 async def rand_cmd(message: Message, args: [str]):
     """
     rand START END: generate a random number between START & END
-    [END-D]
     """
     if len(args) != 2:
         ans = 'Illegal'

@@ -95,7 +95,6 @@ async def process_cmd(message):
 async def get_help(message, args):
     """
     Sends a 'help' message
-    [END-D]
     """
     help_msg = "**__Help:__**\n\n"
 
