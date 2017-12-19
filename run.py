@@ -17,7 +17,6 @@ from collections import namedtuple
 
 DIR = os.path.dirname(__file__) + '/'
 TOKEN_PATH = 'token.txt'
-USER_KICK_TIMEOUT = 700
 CMD_SIGN = '$'
 
 MemberOnServer = namedtuple('MemberOnServer', 'user server')
@@ -28,7 +27,7 @@ commands = {}
 
 
 async def destroy(member):
-    await asyncio.sleep(USER_KICK_TIMEOUT)
+    await asyncio.sleep(user_kick_timeout)
     try:
         if member in unverified.keys():
             await client.send_message(member.server, "{0.mention} IT'S HAMMER TIME".format(member.user))
