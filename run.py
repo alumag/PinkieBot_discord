@@ -2,25 +2,14 @@ import asyncio
 import random
 import re
 import string
-import sys
 
 import discord
 
+from cybot.settings import *
 from plugins import commands, async_commands, karma_store_cmds
 from plugins.karma import _take_karma
 
-token_path = 'token.txt'
-if len(sys.argv) > 1:
-    token_path = sys.argv[1]
-
-client = discord.Client()
-token = open(token_path).read().strip('\n')
-
 unverified = {}
-
-user_kick_timeout = 700
-eng = "poiuytrewqlkjhgfdsamnbvcxz"
-heb = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
 
 
 async def destroy(member):
@@ -113,4 +102,4 @@ async def on_message(message):
             unverified.pop(message.author)
 
 
-client.run(token)
+client.run(TOKEN)
