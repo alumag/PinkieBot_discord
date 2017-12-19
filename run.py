@@ -1,12 +1,11 @@
 import os
-import re
-import sys
 import utils
 import random
 import string
 import discord
 import asyncio
 
+from plugins import *
 from cybot import client
 from cybot.settings import (
     TOKEN,
@@ -100,26 +99,17 @@ async def process_cmd(message):
 async def get_help(message, args):
     """
     Sends a 'help' message
-    ***----***
+    [END-D]
     """
     help_msg = "**__Help:__**\n\n"
 
     for command_name, command_func, command_channels in utils.register_command.functions_list:
         if hasattr(command_func, '__doc__') and isinstance(command_func.__doc__, str):
-            doc = command_func.__doc__.split("***----***")[0].lstrip().rstrip()
+            doc = command_func.__doc__.split("[END-D]")[0].lstrip().rstrip()
         else:
             doc = ""
         help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
     await client.send_message(message.channel, help_msg)
-
-
-@utils.register_command(name='ping', channels=['bot'])
-async def ping_cmd(message, args):
-    """
-    return a pong
-    ***----***
-    """
-    await client.send_message(message.channel, "Pong!")
 
 
 @client.event
@@ -134,7 +124,6 @@ async def on_message(message):
             if message.content == unverified[member]:
                 await client.send_message(message.channel, member.user.mention + ' thanks!')
                 unverified.pop(member)
-
 
 for cmd_name, cmd_func, cmd_channels in utils.register_command.functions_list:
     commands[cmd_name] = Command(function=cmd_func, channels=cmd_channels)
