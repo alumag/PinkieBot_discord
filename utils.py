@@ -37,10 +37,10 @@ def function_registerer():
 
 def admin(func):
     @wraps(func)
-    def wrapped(client, message, args):
+    def wrapped(message, args):
         if message.author.server.owner.top_role not in message.author.roles:
             return
-        return func(client, message, args)
+        return func(message, args)
     return wrapped
 
 

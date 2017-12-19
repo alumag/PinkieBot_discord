@@ -1,13 +1,14 @@
 import discord
-import asyncio
 
 import urllib.request
 import json
 
+
 def is_ascii(s):
     return all(ord(c) < 128 for c in s)
 
-def query_ddg(client, message, args):
+
+def query_ddg(message, args):
 
 	try:
 		if not is_ascii(args):

@@ -1,4 +1,3 @@
-import random
 from functools import reduce
 
 ANSWERS = [
@@ -14,7 +13,7 @@ ANSWERS = [
     "I'm too tired",
 ]
 
-def eight_ball_cmd(client, message, args):
+def eight_ball_cmd(message, args):
     if args.endswith('?'):
         index = (int(message.author.id) + reduce(lambda x,y: x + y, map(ord, args))) % len(ANSWERS)
         return ANSWERS[index]

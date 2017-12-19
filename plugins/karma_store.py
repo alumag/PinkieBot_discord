@@ -1,5 +1,7 @@
-from karma import _get_karma, _take_karma
 import collections
+
+from cybot import client
+from plugins.karma import _get_karma, _take_karma
 
 Item = collections.namedtuple('Item', 'name,type,value,price')
 
@@ -10,17 +12,19 @@ items = [
     Item(name='Skid - Role', type='role', value='Skid', price=5),
 ]
 
-async def buy_item(client, message, args):
+
+async def buy_item(message, args):
     try:
         index = int(args)
     except:
         await client.send_message(message.author, 'Syntax error when buying')
         await client.delete_message(message)
         return
-    await buy(client, message.author, index)
+    await buy(message.author, index)
     await client.delete_message(message)
 
-async def buy(client, member, index):
+
+async def buy(member, index):
     try:
         wanted = items[index]
     except:
@@ -34,7 +38,7 @@ async def buy(client, member, index):
                 await client.send_message(member, "The role " + wanted.value + " is not exists at this server")
             else:
                 try:
-                    await _set_role(client, member, role_obj)
+                    await _set_role(member, role_obj)
                     _take_karma(user_id, wanted.price)
                     await client.send_message(member, "You just bought the role " + wanted.value + ". Yay!!")
                 except Exception as e:
@@ -45,7 +49,7 @@ async def buy(client, member, index):
         await client.send_message(member, 'Insufficient funds. Get more karma by helping other users')
 
 
-async def _set_role(client, member, role):
+async def _set_role(member, role):
     await client.add_roles(member, role)
 
 

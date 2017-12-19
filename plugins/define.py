@@ -7,7 +7,7 @@ english = string.ascii_letters + string.whitespace + string.digits + extra
 hebrew = 'אבגדהוזחטיכלמנסעפצקרשתךףםןץ' + string.whitespace + extra
 
 
-def define_cmd(client, message, args):
+def define_cmd(message, args):
     if len(args) < 2:
         return 'Illegal'
     res = ''

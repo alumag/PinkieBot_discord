@@ -1,10 +1,18 @@
 import os
+import re
 import sys
 import utils
 import random
 import string
 import discord
 import asyncio
+
+from cybot import client
+from cybot.settings import (
+    TOKEN,
+    user_kick_timeout,
+    eng, heb
+)
 
 from collections import namedtuple
 
@@ -13,17 +21,9 @@ TOKEN_PATH = 'token.txt'
 USER_KICK_TIMEOUT = 700
 CMD_SIGN = '$'
 
-if len(sys.argv) > 1:
-    TOKEN_PATH = sys.argv[1]
-TOKEN = open(TOKEN_PATH).read().strip('\n')
-
-ENG_KEYS = "poiuytrewqlkjhgfdsamnbvcxz"
-HEB_KEYS = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
-
 MemberOnServer = namedtuple('MemberOnServer', 'user server')
 Command = namedtuple('Command', 'function channels')
 
-client = discord.Client()
 unverified = {}
 commands = {}
 
@@ -82,13 +82,13 @@ async def process_cmd(message):
     cmd = split[0]
     args = split[1:]
 
-    if all([*map(lambda c: (c in HEB_KEYS), cmd)]):
-        cmd = ''.join([*map(lambda x: (ENG_KEYS[HEB_KEYS.index(x)]), cmd)])
+    if all([*map(lambda c: (c in heb), cmd)]):
+        cmd = ''.join([*map(lambda x: (eng[heb.index(x)]), cmd)])
 
     if cmd in commands.keys():
         if commands[cmd].channels is None or \
                 any([utils.is_right_channel(message.channel.name, channel) for channel in commands[cmd].channels]):
-            await commands[cmd].function(client, message, args)
+            await commands[cmd].function(message, args)
         else:
             await client.send_message(message.channel, '**Oops...**  you can\'t use that command in this channel!')
     else:
@@ -97,7 +97,7 @@ async def process_cmd(message):
 
 
 @utils.register_command(name='help')
-async def get_help(bot, message, args):
+async def get_help(message, args):
     """
     Sends a 'help' message
     ***----***
@@ -110,16 +110,16 @@ async def get_help(bot, message, args):
         else:
             doc = ""
         help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
-    await bot.send_message(message.channel, help_msg)
+    await client.send_message(message.channel, help_msg)
 
 
 @utils.register_command(name='ping', channels=['bot'])
-async def ping_cmd(bot, message, args):
+async def ping_cmd(message, args):
     """
     return a pong
     ***----***
     """
-    await bot.send_message(message.channel, "Pong!")
+    await client.send_message(message.channel, "Pong!")
 
 
 @client.event
@@ -134,6 +134,7 @@ async def on_message(message):
             if message.content == unverified[member]:
                 await client.send_message(message.channel, member.user.mention + ' thanks!')
                 unverified.pop(member)
+
 
 for cmd_name, cmd_func, cmd_channels in utils.register_command.functions_list:
     commands[cmd_name] = Command(function=cmd_func, channels=cmd_channels)
