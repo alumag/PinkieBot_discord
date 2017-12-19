@@ -6,8 +6,8 @@ import sys
 
 import discord
 
-from commands import commands, async_commands, karma_store_cmds
-from commands.karma import _take_karma
+from plugins import commands, async_commands, karma_store_cmds
+from plugins.karma import _take_karma
 
 token_path = 'token.txt'
 if len(sys.argv) > 1:

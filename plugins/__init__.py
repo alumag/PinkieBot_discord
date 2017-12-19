@@ -1,17 +1,17 @@
 from urllib.parse import quote_plus
 from uuid import uuid4
 
-from commands.char_cmds import ord_cmd, chr_cmd
-from commands.clear_messages import clear_messages
-from commands.ddg_cmd import query_ddg
-from commands.define import define_cmd
-from commands.eight_ball_cmd import eight_ball_cmd
-from commands.emojiwrite import emojiwrite
-from commands.karma import add_karma_cmd, get_karma_cmd, set_karma_cmd, take_karma_cmd
-from commands.karma_store import buy_item
-from commands.number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
-from commands.rand_cmd import rand_cmd
-from commands.urban_cmd import query_urban_dictionary
+from plugins.char_cmds import ord_cmd, chr_cmd
+from plugins.clear_messages import clear_messages
+from plugins.ddg_cmd import query_ddg
+from plugins.define import define_cmd
+from plugins.eight_ball_cmd import eight_ball_cmd
+from plugins.emojiwrite import emojiwrite
+from plugins.karma import add_karma_cmd, get_karma_cmd, set_karma_cmd, take_karma_cmd
+from plugins.karma_store import buy_item
+from plugins.number_bases import hex_to_dec_cmd, dec_to_hex_cmd, num_converter_cmd
+from plugins.rand_cmd import rand_cmd
+from plugins.urban_cmd import query_urban_dictionary
 
 doc_file = open('help_file.txt')
 doc_str = doc_file.read()
@@ -19,7 +19,7 @@ doc_file.close()
 
 
 def help_cmd(client, message, args):
-    msg = "Available commands:\n[" + ", ".join(commands.keys()) + "]"
+    msg = "Available plugins:\n[" + ", ".join(commands.keys()) + "]"
     return msg
 
 
