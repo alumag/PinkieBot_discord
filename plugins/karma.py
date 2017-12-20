@@ -2,9 +2,9 @@ import os
 import pickle
 import time
 
-from discord import Embed
+from discord import Embed, Message
 
-from cybot import utils
+from cybot import utils, client
 
 user_data = {}
 _karma_file = 'karma.pkl'
@@ -38,7 +38,11 @@ def set_karma_embed(member, karma):
     return em
 
 
-def add_karma_cmd(message, args):
+@utils.register_command(name='give')
+async def add_karma_cmd(message: Message, args: [str]):
+    """
+    give @USER: give 1 karma to a user
+    """
     if not _file_loaded:
         load_karma()
     try:
@@ -48,18 +52,24 @@ def add_karma_cmd(message, args):
         if user_nick is None:
             user_nick = message.mentions[0].name
     except:
-        return ' No user specified!'
+        return await client.send_message(message.channel, 'No user specified!')
     if target_id == sender_id:
-        return "4ril??"
+        return await client.send_message(message.channel, "4ril??")
     if not _eligible_to_give(sender_id, target_id):
-        return 'You can give karma to %s again in more %d minutes' % \
-               (user_nick, (_time_between_karma - (time.time() - _last_karma_time[(sender_id, target_id)])) / 60)
+        return await client.send_message(message.channel, 'You can give karma to %s again in more %d minutes' %
+                                         (user_nick,
+                                          (_time_between_karma - (time.time() - _last_karma_time[(sender_id,
+                                                                                                  target_id)])) / 60))
     _add_karma(sender_id, target_id)
-    return '%s has %s karma' % (user_nick, _get_karma(target_id))
+    await client.send_message(message.channel, '%s has %s karma' % (user_nick, _get_karma(target_id)))
 
 
+@utils.register_command(name='setkarma')
 @utils.admin
-def set_karma_cmd(message, args):
+async def set_karma_cmd(message: Message, args: [str]):
+    """
+    setkarma @USER number: set number of karma to user (Admins only)
+    """
     if not _file_loaded:
         load_karma()
     try:
@@ -68,17 +78,22 @@ def set_karma_cmd(message, args):
         user_nick = message.mentions[0].nick
         if user_nick is None:
             user_nick = message.mentions[0].name
-        if(not args.split(' ')[1].isnumeric()):
-            return ' This is not a number'
-        num = int(args.split(' ')[1])
+        if not args[1].isnumeric():
+            return await client.send_message(message.channel, 'This is not a number')
+        num = int(args[1])
     except Exception as e:
         print(e)
-        return ' No user specified!'
+        return await client.send_message(message.channel, 'No user specified!')
     _set_karma(sender_id, target_id, num)
-    return set_karma_embed(message.mentions[0], num)
+    return await client.send_message(message.channel, '', embed=set_karma_embed(message.mentions[0], num))
 
+
+@utils.register_command(name='take')
 @utils.admin
-def take_karma_cmd(message, args):
+async def take_karma_cmd(message, args):
+    """
+    take @USER: take 1 karma to a user (Admins only)
+    """
     if not _file_loaded:
         load_karma()
     try:
@@ -87,13 +102,13 @@ def take_karma_cmd(message, args):
         if user_nick is None:
             user_nick = message.mentions[0].name
     except:
-        return ' No user specified!'
+        return await client.send_message(message.channel, 'No user specified!')
     if user_id == message.author.id:
-        return "4ril??"
-    if not _eligible_to_give(user_id):
+        return await client.send_message(message.channel, "4ril??")
+    if not _eligible_to_give(user_id, None):
         return
     _take_karma(user_id)
-    return '%s has %s karma' % (user_nick, _get_karma(user_id))
+    return await client.send_message(message.channel, '%s has %s karma' % (user_nick, _get_karma(user_id)))
 
 
 def get_karma_cmd(message, args):
@@ -105,7 +120,7 @@ def get_karma_cmd(message, args):
         if user_nick is None:
             user_nick = message.mentions[0].name
     except:
-        return get_karma_embed(message.author,_get_karma(message.author.id))
+        return get_karma_embed(message.author, _get_karma(message.author.id))
     return get_karma_embed(message.mentions[0], _get_karma(user_id))
 
 
