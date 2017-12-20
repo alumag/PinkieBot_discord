@@ -6,7 +6,7 @@ Pinkie Pie is a cyber bot that can do cyber things!
   - Convert ascii and unicode into everything!
   - Karma system - with PinkiePie you can thank people!
 
-# New Features!
+### New Features!
 
   - Karma system
   - WritMoji
@@ -19,7 +19,7 @@ Pinkie Pie is a cyber bot that can do cyber things!
 ### Installaion
 **Cybot runs on python3.6**
 ```shell
-$ pip install -r requirements
+$ pip install -r requirements.txt
 $ python run.py
 ```
 
