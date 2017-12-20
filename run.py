@@ -83,7 +83,7 @@ async def process_cmd(message):
 
     if cmd in commands.keys():
         if commands[cmd].channels is None or \
-                any([utils.is_right_channel(message.channel.name, channel) for channel in commands[cmd].channels]):
+                any([utils.validate_channel(message.channel.name, channel) for channel in commands[cmd].channels]):
             await commands[cmd].function(message, args)
         else:
             await client.send_message(message.channel, '**Oops...**  you can\'t use that command in this channel!')

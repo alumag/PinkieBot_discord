@@ -14,7 +14,16 @@ def function_registerer():
     """
     functions_list = []
 
-    def registrar_warp(name, channels=None):
+    def registrar_warp(name: str, channels: [str]=None):
+        """
+        :param name: the command name, what users need to write after the CMD_SIGN
+                            to get to the command's function
+        :param channels: a list of all the channels that the users allowed to use
+                            that command. if None, they can use it everywhere.
+                            syntax:
+                                'name'  = if name is substring of the channel name
+                                '#name' = if the name is equals to the channel name
+        """
         if channels is None:
             the_channels = None
         else:
@@ -44,7 +53,7 @@ def admin(func):
     return wrapped
 
 
-def is_right_channel(name_str, channel_name):
+def validate_channel(name_str: str, channel_name: ChannelName) -> bool:
     if channel_name.is_part:
         return channel_name.string in name_str
     else:
