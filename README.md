@@ -11,7 +11,7 @@ Pinkie Pie is a cyber bot that can do cyber things!
   - Karma system
   - WritMoji
 
-### Installation
+### Invite Cybot to your server!
 ##### Just click the link!
 [Pinkie Pie Discord](https://discordapp.com/oauth2/authorize?&client_id=342379387997519872&scope=bot&permissions=10)
 
