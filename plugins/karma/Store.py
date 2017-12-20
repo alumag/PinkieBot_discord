@@ -1,7 +1,7 @@
 import collections
 
 from cybot import client, utils
-from plugins.Karma.Core import _get_karma, _take_karma
+from plugins.karma.Core import _get_karma, _take_karma
 
 Item = collections.namedtuple('Item', 'name,type,value,price')
 

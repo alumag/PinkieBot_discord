@@ -14,13 +14,13 @@ _time_between_karma = 60 * 30  # half an hour, in seconds
 
 
 def get_karma_embed(member, karma):
-    em = Embed(title="Karma balance", color=0x0080ff)
+    em = Embed(title="karma balance", color=0x0080ff)
     _url = member.avatar_url
     if _url is None:
         _url = member.default_avatar
 
     em.set_thumbnail(url=_url)
-    em.add_field(name="User: %s" % member.name, value="Karma: %d" % karma, inline=False)
+    em.add_field(name="User: %s" % member.name, value="karma: %d" % karma, inline=False)
 
     return em
 
