@@ -15,6 +15,9 @@ items = [
 
 @utils.register_command(name='buy', channels=['#karma-store'])
 async def buy_item(message, args):
+    """
+    buy index: lets you buy item in the karma-store
+    """
     args = ' '.join(args)
     try:
         index = int(args)
