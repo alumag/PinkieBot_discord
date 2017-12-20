@@ -11,6 +11,3 @@ CMD_SIGN = '$'
 user_kick_timeout = 700
 eng = "poiuytrewqlkjhgfdsamnbvcxz"
 heb = "פםןוטארק'/ךלחיעכגדשצמנהבסז"
-
-with open('help_file.txt') as help_file:
-    DOC_TXT = help_file.read()
