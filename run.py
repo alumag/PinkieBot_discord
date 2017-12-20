@@ -5,6 +5,7 @@ import asyncio
 from collections import namedtuple
 
 import discord
+from discord import Message
 
 from plugins import *
 from cybot import client, utils
@@ -108,8 +109,8 @@ async def get_help(message, args):
 
 
 @client.event
-async def on_message(message):
-    if message.author == client.user:
+async def on_message(message: Message):
+    if message.author.bot:
         return
     elif message.content.startswith(CMD_SIGN):
         await process_cmd(message)
