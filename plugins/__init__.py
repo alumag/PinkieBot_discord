@@ -1,6 +1,7 @@
 import os
-from plugins import *
 import glob
+
+from plugins import *
 
 
 def do_import(mud_name):

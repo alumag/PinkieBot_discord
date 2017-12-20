@@ -1,6 +1,7 @@
 import json
 import string
 import requests
+
 from discord import Message
 
 from cybot import client, utils

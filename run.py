@@ -2,9 +2,9 @@ import os
 import random
 import string
 import asyncio
-import discord
-
 from collections import namedtuple
+
+import discord
 
 from plugins import *
 from cybot import client, utils
