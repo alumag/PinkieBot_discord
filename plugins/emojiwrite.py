@@ -1,22 +1,25 @@
 import string
 
-def emojiwrite(message, args):
-	msg = ""
-	print("in")
-	print(args)
-	try:
-		print(args)
-		print(args[0])
-		for char in args:
-			print(char)
-			print(msg)
-			if char in string.ascii_uppercase:
-				msg += ':regional_indicator_{0}: '.format(char.lower())
-			elif char in string.ascii_lowercase:
-				msg += ':regional_indicator_{0}: '.format(char.lower())
-			else:
-				msg += char + " "
-	except:
-		pass
-	return msg
+from discord import Message
 
+from cybot import utils, client
+
+
+@utils.register_command(name='writmoji')
+async def emojiwrite(message: Message, args: [str]):
+    """
+    writmoji PHASE: write the phrase with emojies
+    """
+    args = ' '.join(args)
+    msg = ""
+    try:
+        for char in args:
+            if char in string.ascii_uppercase:
+                msg += ':regional_indicator_{0}: '.format(char.lower())
+            elif char in string.ascii_lowercase:
+                msg += ':regional_indicator_{0}: '.format(char.lower())
+            else:
+                msg += char + " "
+    except:
+        pass
+    await client.send_message(message.channel, msg)
