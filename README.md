@@ -15,6 +15,14 @@ Pinkie Pie is a cyber bot that can do cyber things!
 ##### Just click the link!
 [Pinkie Pie Discord](https://discordapp.com/oauth2/authorize?&client_id=342379387997519872&scope=bot&permissions=10)
 
+
+### Installaion
+**Cybot runs on python3.6**
+```shell
+$ pip install -r requirements
+$ python run.py
+```
+
 ### Todos
  - Auto initial when join a server
  - Add better database
