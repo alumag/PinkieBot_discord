@@ -1,6 +1,6 @@
 import collections
 
-from cybot import client
+from cybot import client, utils
 from plugins.karma import _get_karma, _take_karma
 
 Item = collections.namedtuple('Item', 'name,type,value,price')
@@ -13,7 +13,12 @@ items = [
 ]
 
 
+@utils.register_command(name='buy', channels=['#karma-store'])
 async def buy_item(message, args):
+    """
+    buy index: lets you buy item in the karma-store
+    """
+    args = ' '.join(args)
     try:
         index = int(args)
     except:

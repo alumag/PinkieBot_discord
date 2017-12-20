@@ -1,50 +1,67 @@
-import asyncio
+import os
 import random
-import re
 import string
+import asyncio
+from collections import namedtuple
 
 import discord
+from discord import Message
 
-from cybot import client
+from plugins import *
+from cybot import client, utils
 from cybot.settings import (
     TOKEN,
     user_kick_timeout,
-    eng, heb
+    eng, heb,
+    CMD_SIGN
 )
 
-from plugins import commands, async_commands, karma_store_cmds
-from plugins.karma import _take_karma
+
+MemberOnServer = namedtuple('MemberOnServer', 'user server')
+Command = namedtuple('Command', 'function channels')
 
 unverified = {}
+commands = {}
 
 
 async def destroy(member):
     await asyncio.sleep(user_kick_timeout)
     try:
         if member in unverified.keys():
-            await client.send_message(member.server, "{0.mention} IT'S HAMMER TIME".format(member))
-            await client.kick(member)
+            await client.send_message(member.server, "{0.mention} IT'S HAMMER TIME".format(member.user))
+            await client.send_message(member.user, "You have been kicked from ***{}*** because you "
+                                                   "didn't write the captcha".format(member.server))
+            await client.kick(member.user)
+            unverified.pop(member)
     except discord.Forbidden:
         await client.send_message(member.server, 'Member is too stronk')
-    finally:
         unverified.pop(member)
 
 
 def generate_captcha():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    captcha = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+    if captcha.startswith(CMD_SIGN):
+        return generate_captcha()
+    else:
+        return captcha
 
 
 @client.event
-async def on_member_join(member):
-    server = member.server
-    fmt = "Welcome {0.mention}!\n Please type the following message in order to verify that you're a human: `{1}`"
+async def on_member_join(user):
+    if not user.bot:
+        member = MemberOnServer(user=user, server=user.server)
+        message = "Welcome {0.mention}!\n " \
+                  "Please type the following message in order to verify that you're a human: `{1}`"
 
-    if member not in unverified.keys():
-        captcha = generate_captcha()
-        unverified[member] = captcha
+        if member not in unverified.keys():
+            captcha = generate_captcha()
+            unverified[member] = captcha
 
-        await client.send_message(server, server.owner.top_role.mention + '\n ' + fmt.format(member, captcha))
-        await destroy(member)
+            await client.send_message(member.server,
+                                      member.server.owner.top_role.mention + '\n ' +
+                                      message.format(member.user, captcha))
+            await destroy(member)
 
 
 @client.event
@@ -56,58 +73,55 @@ async def on_ready():
     await client.change_presence(game=discord.Game(name="Cyber"))
 
 
-@client.event
-async def on_message(message):
-    if message.author.bot: return
+async def process_cmd(message):
+    split = message.content[1:].split()
+    cmd = split[0]
+    args = split[1:]
 
-    if re.match("^ע[ד]+[ ]*מת[י]+$", message.content):
-        await client.send_message(message.channel, message.author.mention + '\nשתוק יצעיר פעור ולח')
-        _take_karma(message.author.id)
-        return
+    if all([*map(lambda c: (c in heb), cmd)]):
+        cmd = ''.join([*map(lambda x: (eng[heb.index(x)]), cmd)])
 
-    if message.content.startswith('$'):
-        command = message.content.strip('$').split(' ')[0]
-        if  all([*map(lambda c:(c in heb),command)]) == True:
-            command = ''.join([*map(lambda x:(eng[heb.index(x)]),command)])
-
-        if command not in ['ddg', 'convert', 'clear', 'buy']:
-            if 'bot' not in message.channel.name:
-                tmp = await client.send_message(message.channel,
-                                                message.author.mention + ' "${}" is supported only on bot-related'
-                                                                         ' channels'.format(command))
-                await asyncio.sleep(3)
-                await client.delete_messages([tmp, message])
-                return
-
-        args = message.content.replace('$' + command + ' ', '', 1)
-        if command in commands.keys():
-            ret = commands[command](message, args)
-            if type(ret) is str:
-                await client.send_message(message.channel, message.author.mention + '\n' + ret)
-
-            elif type(ret) is discord.Embed:
-                await client.send_message(message.channel, message.author.mention, embed=ret)
-
-        elif command in async_commands:
-            await async_commands[command](message, args)
-
-        elif 'karma-store' == message.channel.name:
-            if command in karma_store_cmds:
-                await karma_store_cmds[command](message, args)
-            else:
-                await client.delete_message(message)
-
+    if cmd in commands.keys():
+        if commands[cmd].channels is None or \
+                any([utils.validate_channel(message.channel.name, channel) for channel in commands[cmd].channels]):
+            await commands[cmd].function(message, args)
         else:
-            await client.send_message(message.channel,
-                                      message.author.mention + '\n"${}" is not supported!'.format(command))
+            await client.send_message(message.channel, '**Oops...**  you can\'t use that command in this channel!')
+    else:
+        await client.send_message(message.channel, '**Oops...**  unknown command *{1}{0}* \n'
+                                                   '(use {1}help to see the list of commands)'.format(cmd, CMD_SIGN))
 
-    elif 'karma-store' == message.channel.name:
-        await client.delete_message(message)
-    if message.author in unverified.keys():
-        if message.content == unverified[message.author]:
-            await client.send_message(message.channel,
-                                      message.author.mention + ' thanks!')
-            unverified.pop(message.author)
 
+@utils.register_command(name='help')
+async def get_help(message, args):
+    """
+    Sends a 'help' message
+    """
+    help_msg = "**__Help:__**\n\n"
+
+    for command_name, command_func, command_channels in utils.register_command.functions_list:
+        if hasattr(command_func, '__doc__') and isinstance(command_func.__doc__, str):
+            doc = command_func.__doc__.split("[END-D]")[0].lstrip().rstrip()
+        else:
+            doc = ""
+        help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
+    await client.send_message(message.channel, help_msg)
+
+
+@client.event
+async def on_message(message: Message):
+    if message.author.bot:
+        return
+    elif message.content.startswith(CMD_SIGN):
+        await process_cmd(message)
+    else:
+        member = MemberOnServer(user=message.author, server=message.server)
+        if member in unverified.keys():
+            if message.content == unverified[member]:
+                await client.send_message(message.channel, member.user.mention + ' thanks!')
+                unverified.pop(member)
+
+for cmd_name, cmd_func, cmd_channels in utils.register_command.functions_list:
+    commands[cmd_name] = Command(function=cmd_func, channels=cmd_channels)
 
 client.run(TOKEN)
