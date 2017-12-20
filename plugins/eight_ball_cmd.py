@@ -1,5 +1,9 @@
 from functools import reduce
 
+from discord import Message
+
+from cybot import utils, client
+
 ANSWERS = [
     "Definitely",
     "Yes",
@@ -13,8 +17,16 @@ ANSWERS = [
     "I'm too tired",
 ]
 
-def eight_ball_cmd(message, args):
+
+@utils.register_command(name='8ball', channels=['bot'])
+async def eight_ball_cmd(message: Message, args: [str]):
+    """
+    8ball question?: answers your question with pure magic!
+    """
+    args = ' '.join(args)
     if args.endswith('?'):
-        index = (int(message.author.id) + reduce(lambda x,y: x + y, map(ord, args))) % len(ANSWERS)
-        return ANSWERS[index]
-    return 'Please ask a question'
+        index = (int(message.author.id) + reduce(lambda x, y: x + y, map(ord, args))) % len(ANSWERS)
+        ans = ANSWERS[index]
+    else:
+        ans = 'Please ask a question'
+    await client.send_message(message.channel, ans)
