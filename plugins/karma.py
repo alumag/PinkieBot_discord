@@ -90,7 +90,7 @@ async def set_karma_cmd(message: Message, args: [str]):
 
 @utils.register_command(name='take')
 @utils.admin
-async def take_karma_cmd(message, args):
+async def take_karma_cmd(message: Message, args: [str]):
     """
     take @USER: take 1 karma to a user (Admins only)
     """
@@ -111,7 +111,11 @@ async def take_karma_cmd(message, args):
     return await client.send_message(message.channel, '%s has %s karma' % (user_nick, _get_karma(user_id)))
 
 
-def get_karma_cmd(message, args):
+@utils.register_command(name='karma', channels=['bot'])
+async def get_karma_cmd(message: Message, args: [str]):
+    """
+    karma @USER: check how much karma a user has
+    """
     if not _file_loaded:
         load_karma()
     try:
@@ -119,9 +123,10 @@ def get_karma_cmd(message, args):
         user_nick = message.mentions[0].nick
         if user_nick is None:
             user_nick = message.mentions[0].name
+        ans = get_karma_embed(message.mentions[0], _get_karma(user_id))
     except:
-        return get_karma_embed(message.author, _get_karma(message.author.id))
-    return get_karma_embed(message.mentions[0], _get_karma(user_id))
+        ans = get_karma_embed(message.author, _get_karma(message.author.id))
+    await client.send_message(message.channel, '', embed=ans)
 
 
 def _set_karma_time(sender_id, target_id):
