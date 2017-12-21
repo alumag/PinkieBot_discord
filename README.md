@@ -20,8 +20,12 @@ Pinkie Pie is a cyber bot that can do cyber things!
 **Cybot runs on python3.6**
 ```shell
 $ pip install -r requirements.txt
+$ echo <discord token> > token.txt
 $ python run.py
 ```
+
+### Wiki and contributing
+We doc our code in [wiki](https://github.com/MissLummie/PinkieBot_discord/wiki) pages. Please read our guide before contributing
 
 ### Todos
  - Auto initial when join a server
