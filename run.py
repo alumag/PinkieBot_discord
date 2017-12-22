@@ -58,9 +58,14 @@ async def on_member_join(user):
             captcha = generate_captcha()
             unverified[member] = captcha
 
-            await client.send_message(member.server,
-                                      member.server.owner.top_role.mention + '\n ' +
-                                      message.format(member.user, captcha))
+            try:
+                await client.send_message(member.server,
+                                          member.server.owner.top_role.mention + '\n ' +
+                                          message.format(member.user, captcha))
+            except discord.errors.NotFound:
+                await client.send_message(member,
+                                          member.server.owner.top_role.mention + '\n ' +
+                                          message.format(member.user, captcha))
             await destroy(member)
 
 
