@@ -30,7 +30,8 @@ We doc our code in [wiki](https://github.com/MissLummie/PinkieBot_discord/wiki) 
 ### Todos
  - Auto initial when join a server
  - Add better database
+ - Implement an embed system for messages
 
 ### License
-Thanks [Shaharrose and noam pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot\
+Thanks [Shaharrose and Noam Pnueli](https://github.com/shaharrose/ScubilDiscord) for their basic bot\
 **Aluma (PinkiePie), Shahar (MexicanOS) and Meitar (MeitarR) 2017**
