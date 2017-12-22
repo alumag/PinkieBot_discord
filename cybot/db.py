@@ -68,13 +68,24 @@ class RunCommand:
             return False
         return True
 
+    @staticmethod
+    def select_row(table: str, fields: [str], expression: str):
+        fields = ", ".join(fields)
+        try:
+            s = c.execute(f"SELECT {fields} FROM {table} WHERE {expression}")
+        except Exception as e:
+            print(e)
+            return False
+        return s.fetchone()
+
 
 def InitDB():
     @create_table(name='karma')
     def karma():
         return [
             {"name": "user", "type": "text"},
-            {"name": "karma", "type": "real"}
+            {"name": "karma", "type": "real"},
+            {"name": "last_karma_gave", "type": "real"}
         ]
 
     @create_table(name='store')
@@ -92,3 +103,9 @@ def InitDB():
 
 
 InitDB()
+
+
+def __del__(self):
+    c.commit()
+    conn.close()
+    print("closed db")
