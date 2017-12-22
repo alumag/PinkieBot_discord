@@ -54,18 +54,22 @@ class RunCommand:
         values = ", ".join(values)
         try:
             c.execute(f"INSERT INTO {table} VALUES ({values})")
+            conn.commit()
         except Exception as e:
             print(e)
             return False
+        conn.commit()
         return True
 
     @staticmethod
     def update_row(table: str, expression: str, set: str):
         try:
             c.execute(f"UPDATE {table} SET {set} WHERE {expression}")
+            conn.commit()
         except Exception as e:
             print(e)
             return False
+        conn.commit()
         return True
 
     @staticmethod

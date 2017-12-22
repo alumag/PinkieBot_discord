@@ -51,11 +51,11 @@ async def add_karma_cmd(message: Message, args: [str]):
         return await client.send_message(message.channel, "4ril??")
 
     eligible_to_give = _eligible_to_give(sender_id)
-    if not eligible_to_give[1]:
-        return await client.send_message(message.channel, 'You can give karma to %s again in more %d minutes' %
-                                         (user_nick,
-                                          eligible_to_give[0] / 60))
-    _add_karma(sender_id, target_id)
+    #if not eligible_to_give[1]:
+    #    return await client.send_message(message.channel, 'You can give karma to %s again in more %d minutes' %
+    #                                     (user_nick,
+    #                                      eligible_to_give[0] / 60))
+    print(_add_karma(target_id))
     _update_time(sender_id)
     await client.send_message(message.channel, '%s has %s karma' % (user_nick, _get_karma(target_id)))
 
@@ -76,32 +76,31 @@ def _eligible_to_give(sender_id):
     return _time, _time >= _time_between_karma
 
 
-def _add_karma(target_id, num=1):
-    karma = RunCommand.select_row(table="karma",
-                                  fields=["karma"],
-                                  expression=f"user = '{target_id}'")
-    if not karma:
-        RunCommand.add_row(table="karma",
-                           values=[f"'{target_id}'", f"-{num}", f"{int(time.time())}"]
-                           )
-
-    RunCommand.update_row(table="karma",
-                          expression=f"user = '{target_id}'",
-                          set=f"karma = {karma+num}")
-
-
 def _set_karma(target_id, num=1):
     karma = RunCommand.select_row(table="karma",
                                   fields=["karma"],
                                   expression=f"user = '{target_id}'")
     if not karma:
-        RunCommand.add_row(table="karma",
+        return RunCommand.add_row(table="karma",
                            values=[f"'{target_id}'", f"{num}", f"{int(time.time())}"]
                            )
 
-    RunCommand.update_row(table="karma",
+    return RunCommand.update_row(table="karma",
                           expression=f"user = '{target_id}'",
                           set=f"karma = {num}")
+
+
+def _add_karma(target_id, num=1):
+    karma = RunCommand.select_row(table="karma",
+                                  fields=["karma"],
+                                  expression=f"user = '{target_id}'")
+    if not karma:
+        return _set_karma(target_id)
+
+    return _set_karma(target_id, karma[0]+1)
+
+
+
 
 
 def _dec_karma(target_id, num=1):
@@ -109,9 +108,10 @@ def _dec_karma(target_id, num=1):
                                   fields=["karma"],
                                   expression=f"user = '{target_id}'")
     if not karma:
-        RunCommand.add_row(table="karma",
+        return RunCommand.add_row(table="karma",
                            values=[f"'{target_id}'", f"-{num}", f"{int(time.time())}"]
                            )
+    karma = karma[0]
 
     RunCommand.update_row(table="karma",
                           expression=f"user = '{target_id}'",
