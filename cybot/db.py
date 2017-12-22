@@ -69,7 +69,6 @@ class RunCommand:
         return True
 
 
-
 def InitDB():
     @create_table(name='karma')
     def karma():
