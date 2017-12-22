@@ -1,4 +1,3 @@
-import os
 import time
 
 from discord import Embed, Message
@@ -34,7 +33,7 @@ def set_karma_embed(member, karma):
     return em
 
 
-@utils.register_command(name='give')
+@utils.register_command(name='give1')
 async def add_karma_cmd(message: Message, args: [str]):
     """
     give @USER: give 1 karma to a user
