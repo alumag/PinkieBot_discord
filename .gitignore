@@ -103,3 +103,4 @@ ENV/
 
 token.txt
 karma.pkl
+cybot.db
