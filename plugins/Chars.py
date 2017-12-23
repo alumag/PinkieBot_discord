@@ -6,7 +6,7 @@ from cybot import utils, client
 @utils.register_command(name='ord', channels=['bot'])
 async def ord_cmd(message: Message, args: [str]):
     """
-    ord CHAR: display the ascii value of a CHAR
+    <character>: display the ascii value of the character
     """
     if len(args) != 1:
         ans = 'Illegal'
@@ -23,7 +23,7 @@ async def ord_cmd(message: Message, args: [str]):
 @utils.register_command(name='chr', channels=['bot'])
 async def chr_cmd(message, args):
     """
-    chr NUM: convert NUM to a char
+    <number>: displays ascii character of given value
     """
     if len(args) != 1:
         ans = 'Illegal'

@@ -21,7 +21,7 @@ ANSWERS = [
 @utils.register_command(name='8ball', channels=['bot'])
 async def eight_ball_cmd(message: Message, args: [str]):
     """
-    8ball question?: answers your question with pure magic!
+    <question>: answers your question with pure magic!
     """
     args = ' '.join(args)
     if args.endswith('?'):

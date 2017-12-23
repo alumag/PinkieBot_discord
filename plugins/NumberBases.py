@@ -7,7 +7,7 @@ from cybot import utils, client
 @utils.register_command(name='hex2dec', channels=['bot'])
 async def hex_to_dec_cmd(message: Message, args: [str]):
     """
-    hex2dec NUM: convert an hex number to decimal
+    <value>: convert a hex value to decimal
     """
     if len(args) != 1:
         ans = 'Illegal'
@@ -26,7 +26,7 @@ async def hex_to_dec_cmd(message: Message, args: [str]):
 @utils.register_command(name='dec2hex', channels=['bot'])
 async def dec_to_hex_cmd(message: Message, args: [str]):
     """
-    dec2hex NUM: convert a decimal number to hexadecimal
+    <number>: convert a decimal number to hexadecimal
     """
     if len(args) != 1:
         ans = 'Illegal'
@@ -43,7 +43,7 @@ async def dec_to_hex_cmd(message: Message, args: [str]):
 @utils.register_command(name='convert', channels=['bot'])
 async def num_converter_cmd(message: Message, args: [str]):
     """
-    convert VAL: convert VAL
+    <value>: display value in all representations
     """
     if len(args) == 1:
         try:

@@ -6,7 +6,7 @@ with open(TOKEN_PATH) as TOKEN_SOURCE:
     TOKEN = TOKEN_SOURCE.read().strip('\n')
 
 DIR = os.path.dirname(__file__) + '/'
-CMD_SIGN = '$'
+CMD_SIGN = '%'
 
 user_kick_timeout = 700
 eng = "poiuytrewqlkjhgfdsamnbvcxz"

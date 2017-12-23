@@ -8,7 +8,7 @@ from cybot import utils, client
 @utils.register_command(name='rand', channels=['bot'])
 async def rand_cmd(message: Message, args: [str]):
     """
-    rand START END: generate a random number between START & END
+    <min> <max>: generates a random number between min and max
     """
     if len(args) != 2:
         ans = 'Illegal'

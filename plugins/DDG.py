@@ -14,7 +14,7 @@ def is_ascii(s):
 @utils.register_command(name='ddg')
 async def query_ddg(message: Message, args: [str]):
     """
-    ddg PHASE: search PHASE on duckduckgo (a search engine)
+    <query>: search query on DuckDuckGo search engine
     """
     try:
         args = urllib.request.quote(' '.join(args))

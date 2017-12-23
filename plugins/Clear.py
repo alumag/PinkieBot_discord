@@ -5,7 +5,7 @@ from cybot import client, utils
 @utils.admin
 async def clear_messages(message, args):
     """
-    clear number: clears number of messages (Admins only)
+    <number>: clears given number of messages [Admins only]
     """
     try:
         await client.purge_from(message.channel, limit=min(100, int(' '.join(args))))

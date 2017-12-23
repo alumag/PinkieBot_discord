@@ -10,7 +10,7 @@ from cybot import utils, client
 @utils.register_command(name='urban')
 async def query_urban_dictionary(message: Message, args: [str]):
     """
-    urban PHASE: search PHASE on urban (a dictionary)
+    <query>: search query in urban dictionary
     """
     ans = "Sorry, I couldn't find anything on that"
     if len(args) > 0:
