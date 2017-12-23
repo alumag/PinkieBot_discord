@@ -8,7 +8,7 @@ import discord
 from discord import Message
 
 from plugins import *
-from cybot import client, utils
+from cybot import client, utils, EmbedDialogue
 from cybot.settings import (
     TOKEN,
     user_kick_timeout,
@@ -97,16 +97,26 @@ async def get_help(message, args):
     """
     Sends a 'help' message
     """
-    help_msg = "**__Help:__**\n\n"
+    help_msg = {}
 
     for command_name, command_func, command_channels in utils.register_command.functions_list:
         if hasattr(command_func, '__doc__') and isinstance(command_func.__doc__, str):
             doc = command_func.__doc__.split("[END-D]")[0].lstrip().rstrip()
         else:
             doc = ""
-        help_msg += "**%s%s** - *%s*\n" % (CMD_SIGN, command_name, doc)
-    await client.send_message(message.channel, help_msg)
+        help_msg[command_name] = doc
 
+    dialogue = EmbedDialogue.EmbedDialogue(help_msg)
+    dialogue.user = message.author
+    dialogue.title = "Help"
+    dialogue.description = "If Young Metro don't trust you I'm gon' shoot ya"
+    dialogue.add_reaction('⏪', dialogue.first_page)
+    dialogue.add_reaction('◀', dialogue.go_back)
+    dialogue.add_reaction('▶', dialogue.go_forward)
+    dialogue.add_reaction('⏩', dialogue.last_page)
+    dialogue.add_reaction('⏹', dialogue.exit_dialogue)
+    await dialogue.create(client, message.channel)
+    await dialogue.update(client)
 
 @client.event
 async def on_message(message: Message):

@@ -14,7 +14,7 @@ hebrew = 'אבגדהוזחטיכלמנסעפצקרשתךףםןץ' + string.white
 @utils.register_command(name='def')
 async def define_cmd(message: Message, args: [str]):
     """
-    def PHASE: find a definition for PHASE, works for Hebrew and English
+    <query>: finds a definition for the query, supports English and Hebrew
     """
     if len(args) > 0:
         res = ''
